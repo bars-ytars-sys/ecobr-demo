@@ -1,0 +1,66 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import HouseCard from './HouseCard.astro';
+
+interface Props {
+  houses: CollectionEntry<'houses'>[];
+  filters?: boolean;
+}
+const { houses, filters = true } = Astro.props;
+const tabs = [
+  { v: 'all', label: 'Все дома' },
+  { v: 'pair', label: 'Вдвоём' },
+  { v: 'family', label: 'Семьёй' },
+  { v: 'company', label: 'Компанией' },
+] as const;
+---
+
+<div class="rail">
+  <div class="wrap flex flex-wrap items-center justify-between gap-6">
+    {
+      filters && (
+        <div class="-mx-5 flex gap-x-6 overflow-x-auto px-5 [scrollbar-width:none] sm:mx-0 sm:gap-x-8 sm:overflow-visible sm:px-0 [&::-webkit-scrollbar]:hidden" role="group" aria-label="Сценарий отдыха">
+          {tabs.map((t, i) => (
+            <button type="button" data-s={t.v} aria-pressed={i === 0 ? 'true' : 'false'} class="shrink-0 border-b border-transparent pb-1 font-display text-[1.6rem] whitespace-nowrap text-stone transition hover:text-cream aria-pressed:border-brass aria-pressed:text-cream sm:text-3xl">
+              {t.label}
+            </button>
+          ))}
+        </div>
+      )
+    }
+    <div class="ml-auto hidden gap-2 sm:flex">
+      <button type="button" class="prev size-12 ring-1 ring-cream/25 transition hover:ring-cream" aria-label="Назад">←</button>
+      <button type="button" class="next size-12 ring-1 ring-cream/25 transition hover:ring-cream" aria-label="Вперёд">→</button>
+    </div>
+  </div>
+  {/* Горизонтальная лента со snap: без JS листается пальцем, все ссылки в HTML */}
+  <div class="track mt-8 flex sm:mt-10 snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-5 pb-4 [scrollbar-width:none] sm:gap-6 sm:px-10 lg:px-[max(2.5rem,calc((100vw-88rem)/2+2.5rem))] [&::-webkit-scrollbar]:hidden">
+    {
+      houses.map((h) => (
+        <div class="slide w-[82%] shrink-0 snap-start sm:w-[45%] lg:w-[calc((100%-3rem)/3.3)]">
+          <HouseCard house={h} />
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.rail').forEach((rail) => {
+    const track = rail.querySelector<HTMLElement>('.track')!;
+    const step = () => (track.querySelector<HTMLElement>('.slide:not([hidden])')?.offsetWidth ?? 300) + 24;
+    rail.querySelector('.prev')?.addEventListener('click', () => track.scrollBy({ left: -step() }));
+    rail.querySelector('.next')?.addEventListener('click', () => track.scrollBy({ left: step() }));
+    rail.querySelectorAll<HTMLButtonElement>('button[data-s]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const s = b.dataset['s'] ?? 'all';
+        rail.querySelectorAll('button[data-s]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        track.querySelectorAll<HTMLElement>('.slide').forEach((sl) => {
+          const card = sl.querySelector<HTMLElement>('.house-card');
+          sl.hidden = s !== 'all' && !(card?.dataset['scenarios'] ?? '').split(' ').includes(s);
+        });
+        track.scrollTo({ left: 0 });
+      }),
+    );
+  });
+</script>

@@ -1,0 +1,152 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { Picture, getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Gallery from '../../components/Gallery.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import HouseRail from '../../components/HouseRail.astro';
+import { site, rub } from '../../data/site';
+
+export const getStaticPaths = (async () => {
+  const houses = await getCollection('houses');
+  return houses.map((house) => ({ params: { slug: house.id }, props: { house, all: houses } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  house: CollectionEntry<'houses'>;
+  all: CollectionEntry<'houses'>[];
+}
+const { house, all } = Astro.props;
+const h = house.data;
+const url = `${site.url}/doma/${house.id}`;
+const og = await getImage({ src: h.cover, width: 1200, format: 'jpg' });
+
+// Похожие: сначала с общим сценарием, затем ближайшие по вместимости
+const similar = all
+  .filter((x) => x.id !== house.id)
+  .sort((a, b) => {
+    const sa = a.data.scenarios.some((s) => h.scenarios.includes(s)) ? 0 : 1;
+    const sb = b.data.scenarios.some((s) => h.scenarios.includes(s)) ? 0 : 1;
+    return sa - sb || Math.abs(a.data.capacity - h.capacity) - Math.abs(b.data.capacity - h.capacity);
+  })
+  .slice(0, 6);
+
+const crumbs = [
+  { href: '/', label: 'Главная' },
+  { href: '/doma', label: 'Дома' },
+  { href: `/doma/${house.id}`, label: h.name },
+];
+
+const facts = [
+  { k: 'Гостей', v: `до ${h.capacity}` },
+  { k: 'Банный чан', v: h.chan ? 'есть' : '—' },
+  { k: 'Баня', v: h.banya ? 'своя' : 'в SPA, 300 м' },
+  { k: 'Сутки', v: `от ${rub(h.price.weekday)}` },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Accommodation',
+    '@id': `${url}#accommodation`,
+    name: `${h.name} — Берёзовая роща`,
+    description: h.lead,
+    url,
+    image: new URL(og.src, site.url).href,
+    occupancy: { '@type': 'QuantitativeValue', maxValue: h.capacity },
+    petsAllowed: true,
+    amenityFeature: [h.chan && 'Банный чан', h.banya && 'Собственная баня']
+      .filter((x): x is string => Boolean(x))
+      .map((name) => ({ '@type': 'LocationFeatureSpecification', name, value: true })),
+    containedInPlace: { '@id': `${site.url}/#organization` },
+    offers: [
+      { '@type': 'Offer', name: 'Будние дни (заезд вс–чт)', price: h.price.weekday, priceCurrency: 'RUB', url, availability: 'https://schema.org/InStock' },
+      { '@type': 'Offer', name: 'Выходные (заезд пт–сб, от 2 ночей)', price: h.price.weekend, priceCurrency: 'RUB', url, availability: 'https://schema.org/InStock' },
+    ],
+  },
+];
+---
+
+<Base title={h.title} description={h.description} ogImage={og.src} jsonLd={jsonLd}>
+  {/* Первый экран дома: обложка во весь экран */}
+  <section class="relative isolate flex min-h-[92svh] items-end overflow-hidden">
+    <Picture
+      formats={['avif', 'webp']}
+      src={h.cover}
+      alt={`${h.name} в Берёзовой роще`}
+      widths={[640, 960, 1280, 1920, 2400]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="absolute inset-0 -z-20 h-full w-full object-cover"
+    />
+    <div class="absolute inset-0 -z-10 bg-gradient-to-t from-night via-night/30 to-night/55"></div>
+    <div class="wrap pt-32 pb-6 sm:pb-10">
+      <Breadcrumbs items={crumbs} />
+      <p class="mt-8 font-display text-xl text-cream/85 italic sm:mt-10 sm:text-3xl">{h.tagline}</p>
+      <h1 class="mt-2 text-[3.4rem] leading-[0.92] sm:text-8xl lg:text-[7.5rem] xl:text-[9rem]">{h.name}</h1>
+      <dl class="mt-10 grid grid-cols-2 border-t border-cream/20 sm:grid-cols-4">
+        {
+          facts.map((f, i) => (
+            <div class:list={['py-5', i % 2 === 1 && 'border-l border-cream/20 pl-5', i === 2 && 'sm:border-l sm:border-cream/20 sm:pl-5', i === 3 && 'sm:pl-5']}>
+              <dt class="label text-[0.6rem] text-stone">{f.k}</dt>
+              <dd class="mt-1 font-display text-xl sm:text-3xl">{f.v}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section class="wrap grid gap-16 py-20 sm:py-32 lg:grid-cols-12">
+    <div class="lg:col-span-7">
+      <p class="label text-brass">О доме</p>
+      <p class="mt-6 font-display text-[1.6rem] leading-[1.25] sm:mt-8 sm:text-4xl lg:text-5xl">{h.lead}</p>
+      <p class="mt-10 max-w-xl leading-relaxed text-stone">
+        Рядом — SPA-комплекс с бассейном под открытым небом, ресторан, контактная ферма и рыбалка на собственных прудах. С животными можно.
+      </p>
+    </div>
+
+    {/* Цена и бронь: липкий блок — к брони в один клик */}
+    <aside class="lg:sticky lg:top-28 lg:col-span-4 lg:col-start-9 lg:self-start">
+      <div class="bg-forest p-7 ring-1 ring-moss sm:p-9">
+        <p class="label text-brass">Стоимость за сутки</p>
+        <dl class="mt-7 divide-y divide-moss border-y border-moss">
+          <div class="flex items-end justify-between gap-4 py-5">
+            <dt class="text-sm">Будни<span class="block text-xs text-stone">заезд вс–чт</span></dt>
+            <dd class="font-display text-4xl">{rub(h.price.weekday)}</dd>
+          </div>
+          <div class="flex items-end justify-between gap-4 py-5">
+            <dt class="text-sm">Выходные<span class="block text-xs text-stone">пт–сб, от 2 ночей</span></dt>
+            <dd class="font-display text-4xl">{rub(h.price.weekend)}</dd>
+          </div>
+        </dl>
+        <a href={site.booking} class="btn-brass mt-8 w-full">Проверить даты</a>
+        <a href={site.phoneHref} class="btn-line mt-3 w-full">{site.phone}</a>
+        <ul class="mt-7 space-y-1.5 text-xs leading-relaxed text-stone">
+          {h.priceNotes.map((n) => <li>{n}</li>)}
+        </ul>
+        <p class="mt-4 text-xs leading-relaxed text-stone">{site.hours}. Можно оплатить частями через «Яндекс Сплит».</p>
+      </div>
+    </aside>
+  </section>
+
+  <section class="px-3 pb-24 sm:px-10 sm:pb-36">
+    <div class="wrap mb-10 flex items-end justify-between px-2! sm:px-0!">
+      <h2 class="text-[2.5rem] leading-[1.02] sm:text-6xl">Фотографии</h2>
+      <p class="label text-stone">{h.gallery.length} кадров</p>
+    </div>
+    <div class="mx-auto max-w-[88rem]">
+      <Gallery images={h.gallery} name={h.name} />
+    </div>
+  </section>
+
+  <section class="border-t border-moss py-24 sm:py-32">
+    <div class="wrap mb-10">
+      <p class="label text-brass">Если хочется сравнить</p>
+      <h2 class="mt-6 text-[2.5rem] leading-[1.02] sm:text-6xl">Похожие дома</h2>
+    </div>
+    <HouseRail houses={similar} filters={false} />
+  </section>
+</Base>

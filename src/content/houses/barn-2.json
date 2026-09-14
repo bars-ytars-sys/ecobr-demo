@@ -1,0 +1,36 @@
+{
+  "title": "Барнхаус 2 — дом до 6 гостей с двумя спальнями | Берёзовая роща",
+  "description": "Барнхаус 2 — дом до 6 гостей с двумя отдельными спальнями и банным чаном для семейного отдыха в Подмосковье. От 14 300 ₽ в сутки.",
+  "name": "Барнхаус 2",
+  "type": "barnhouse",
+  "tagline": "тишина. кмерность. комфорт",
+  "lead": "Большой комфортный дом для загородного семейного отдыха. Две отдельные комнаты и стильный интерьер создают ощущение приватности.",
+  "capacity": 6,
+  "banya": false,
+  "chan": true,
+  "badge": "Для мероприятий",
+  "scenarios": [
+    "family"
+  ],
+  "price": {
+    "weekday": 14300,
+    "weekend": 18700
+  },
+  "priceNotes": [
+    "*Стоимость указана при двухместном размещении",
+    "*Банный чан и наполнение для него не входит в стоимость аренды дома"
+  ],
+  "order": 8,
+  "cover": "../../assets/houses/barn-2/barn-2-01.jpg",
+  "gallery": [
+    "../../assets/houses/barn-2/barn-2-01.jpg",
+    "../../assets/houses/barn-2/barn-2-02.jpg",
+    "../../assets/houses/barn-2/barn-2-03.jpg",
+    "../../assets/houses/barn-2/barn-2-04.jpg",
+    "../../assets/houses/barn-2/barn-2-05.jpg",
+    "../../assets/houses/barn-2/barn-2-06.jpg",
+    "../../assets/houses/barn-2/barn-2-07.jpg",
+    "../../assets/houses/barn-2/barn-2-08.jpg",
+    "../../assets/houses/barn-2/barn-2-09.jpg"
+  ]
+}

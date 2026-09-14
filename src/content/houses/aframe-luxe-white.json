@@ -1,0 +1,35 @@
+{
+  "title": "А-фрейм люкс белый — дом на 4 гостей с чаном | Берёзовая роща",
+  "description": "А-фрейм люкс белый — светлый A-frame до 4 гостей с банным чаном для романтических выходных в Берёзовой роще. От 14 300 ₽ в сутки.",
+  "name": "А-фрейм люкс белый",
+  "type": "aframe",
+  "tagline": "свет. праздник. пространство.",
+  "lead": "Светлый A-frame, в котором выходные ощущаются как событие. Много воздуха, уединение и атмосфера, созданная для романтических поездок и особенных моментов.",
+  "capacity": 4,
+  "banya": false,
+  "chan": true,
+  "badge": "Идеально для двоих",
+  "scenarios": [
+    "pair"
+  ],
+  "price": {
+    "weekday": 14300,
+    "weekend": 17600
+  },
+  "priceNotes": [
+    "*Стоимость указана при двухместном размещении",
+    "*Банный чан и наполнение для него не входит в стоимость аренды дома"
+  ],
+  "order": 5,
+  "cover": "../../assets/houses/aframe-luxe-white/aframe-luxe-white-01.jpg",
+  "gallery": [
+    "../../assets/houses/aframe-luxe-white/aframe-luxe-white-01.jpg",
+    "../../assets/houses/aframe-luxe-white/aframe-luxe-white-02.jpg",
+    "../../assets/houses/aframe-luxe-white/aframe-luxe-white-03.jpg",
+    "../../assets/houses/aframe-luxe-white/aframe-luxe-white-04.jpg",
+    "../../assets/houses/aframe-luxe-white/aframe-luxe-white-05.jpg",
+    "../../assets/houses/aframe-luxe-white/aframe-luxe-white-06.jpg",
+    "../../assets/houses/aframe-luxe-white/aframe-luxe-white-07.jpg",
+    "../../assets/houses/aframe-luxe-white/aframe-luxe-white-08.jpg"
+  ]
+}

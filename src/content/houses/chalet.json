@@ -1,0 +1,35 @@
+{
+  "order": 11,
+  "type": "chalet",
+  "name": "Шале",
+  "title": "Шале — просторный дом до 6 гостей с банным чаном | Берёзовая роща",
+  "description": "Шале — просторный дом до 6 гостей с банным чаном и тёплой архитектурой. Отдых в кругу близких в 40 минутах от Москвы. От 16 500 ₽ в сутки.",
+  "tagline": "пространство. тепло. компания.",
+  "lead": "Современное шале для отдыха в кругу близких, где комфорт чувствуется в каждой детали. Простор, тёплая архитектура и продуманное зонирование.",
+  "capacity": 6,
+  "banya": false,
+  "chan": true,
+  "price": {
+    "weekday": 16500,
+    "weekend": 20900
+  },
+  "priceNotes": [
+    "*Стоимость указана при двухместном размещении",
+    "*Банный чан и наполнение для него не входит в стоимость аренды дома"
+  ],
+  "cover": "../../assets/houses/chalet/chalet-01.jpg",
+  "gallery": [
+    "../../assets/houses/chalet/chalet-01.jpg",
+    "../../assets/houses/chalet/chalet-02.jpg",
+    "../../assets/houses/chalet/chalet-03.jpg",
+    "../../assets/houses/chalet/chalet-04.jpg",
+    "../../assets/houses/chalet/chalet-05.jpg",
+    "../../assets/houses/chalet/chalet-06.jpg",
+    "../../assets/houses/chalet/chalet-07.jpg",
+    "../../assets/houses/chalet/chalet-08.jpg"
+  ],
+  "scenarios": [
+    "family",
+    "company"
+  ]
+}

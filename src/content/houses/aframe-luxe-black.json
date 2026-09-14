@@ -1,0 +1,37 @@
+{
+  "title": "А-фрейм люкс чёрный — дом на 4 гостей с чаном | Берёзовая роща",
+  "description": "А-фрейм люкс чёрный — A-frame с выразительным интерьером и банным чаном до 4 гостей. Уединение среди берёз. От 14 300 ₽ в сутки.",
+  "name": "А-фрейм люкс чёрный",
+  "type": "aframe",
+  "tagline": "тишина с характером",
+  "lead": "Современный A-frame с выразительным интерьером и тёплой глубиной пространства. Идеальный формат для тех, кто ценит уединение, эстетику и неспешный загородный ритм.",
+  "capacity": 4,
+  "banya": false,
+  "chan": true,
+  "badge": "Хит продаж",
+  "scenarios": [
+    "pair"
+  ],
+  "price": {
+    "weekday": 14300,
+    "weekend": 17600
+  },
+  "priceNotes": [
+    "*Стоимость указана при двухместном размещении",
+    "*Банный чан и наполнение для него не входит в стоимость аренды дома"
+  ],
+  "order": 1,
+  "cover": "../../assets/houses/aframe-luxe-black/aframe-luxe-black-01.jpg",
+  "gallery": [
+    "../../assets/houses/aframe-luxe-black/aframe-luxe-black-01.jpg",
+    "../../assets/houses/aframe-luxe-black/aframe-luxe-black-02.jpg",
+    "../../assets/houses/aframe-luxe-black/aframe-luxe-black-03.jpg",
+    "../../assets/houses/aframe-luxe-black/aframe-luxe-black-04.jpg",
+    "../../assets/houses/aframe-luxe-black/aframe-luxe-black-05.jpg",
+    "../../assets/houses/aframe-luxe-black/aframe-luxe-black-06.jpg",
+    "../../assets/houses/aframe-luxe-black/aframe-luxe-black-07.jpg",
+    "../../assets/houses/aframe-luxe-black/aframe-luxe-black-08.jpg",
+    "../../assets/houses/aframe-luxe-black/aframe-luxe-black-09.jpg",
+    "../../assets/houses/aframe-luxe-black/aframe-luxe-black-10.jpg"
+  ]
+}

@@ -1,0 +1,118 @@
+@import 'tailwindcss';
+
+/* «Вечер в роще»: палитра снята с вечерней съёмки базы — тёмный лес, тёплое дерево, латунь ламп, берёзовая кора */
+@theme {
+  --color-night: #10120e;
+  --color-forest: #181b15;
+  --color-moss: #2b3026;
+  --color-cream: #eee6d5;
+  --color-stone: #aaa38f;
+  --color-brass: #c8a06a;
+  --color-birch: #f0ebe1;
+  --color-ink: #1b1d17;
+  --color-bark: #5d5747;
+
+  --font-display: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    background: var(--color-night);
+  }
+  body {
+    @apply bg-night font-sans text-cream antialiased;
+  }
+  /* Лёгкое плёночное зерно — объединяет разные съёмки в одну картинку */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display font-normal;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    @apply bg-brass text-night;
+  }
+  :focus-visible {
+    @apply outline-1 outline-offset-4 outline-brass;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility wrap {
+  @apply mx-auto w-full max-w-[88rem] px-5 sm:px-10;
+}
+@utility label {
+  @apply text-[0.7rem] font-medium tracking-[0.28em] uppercase;
+}
+@utility link-line {
+  @apply bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-1 transition-[background-size] duration-500 hover:bg-[length:100%_1px];
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-3 px-7 py-4 text-[0.78rem] font-semibold tracking-[0.18em] whitespace-nowrap uppercase transition duration-500;
+  transition-timing-function: var(--ease-soft);
+}
+@utility btn-brass {
+  @apply btn bg-brass text-night hover:bg-cream;
+}
+@utility btn-line {
+  @apply btn text-current ring-1 ring-current/35 hover:ring-current;
+}
+
+/* Медленная смена кадров в первом экране */
+@keyframes slide {
+  0% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  6% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 1;
+  }
+  31% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "ecobr-demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.2",
+    "sharp": "^0.35.4",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "lighthouse": "^13.4.1",
+    "playwright-core": "^1.63.0",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "pnpm@12.4.1"
+}

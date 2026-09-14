@@ -1,0 +1,38 @@
+{
+  "order": 4,
+  "type": "baus",
+  "name": "Баус 1",
+  "title": "Баус 1 — зеркальный дом для двоих у опушки | Берёзовая роща",
+  "description": "Баус 1 — зеркальный дом для двоих у опушки с банным чаном и панорамными окнами. Для тихих романтических выходных. От 13 200 ₽ в сутки.",
+  "tagline": "уединение. свет. лес.",
+  "lead": "Зеркальный дом с видом на опушку и ощущением полной тишины. Панорамные окна растворяют дом в природе. Идеальный сценарий для тихих романтических выходных.",
+  "capacity": 2,
+  "banya": false,
+  "chan": true,
+  "badge": "Идеально для двоих",
+  "price": {
+    "weekday": 13200,
+    "weekend": 16500
+  },
+  "priceNotes": [
+    "*Стоимость указана при двухместном размещении",
+    "*Банный чан и наполнение для него не входит в стоимость аренды дома"
+  ],
+  "cover": "../../assets/houses/baus-1/baus-1-01.jpg",
+  "gallery": [
+    "../../assets/houses/baus-1/baus-1-01.jpg",
+    "../../assets/houses/baus-1/baus-1-02.jpg",
+    "../../assets/houses/baus-1/baus-1-03.jpg",
+    "../../assets/houses/baus-1/baus-1-04.jpg",
+    "../../assets/houses/baus-1/baus-1-05.jpg",
+    "../../assets/houses/baus-1/baus-1-06.jpg",
+    "../../assets/houses/baus-1/baus-1-07.jpg",
+    "../../assets/houses/baus-1/baus-1-08.jpg",
+    "../../assets/houses/baus-1/baus-1-09.jpg",
+    "../../assets/houses/baus-1/baus-1-10.jpg",
+    "../../assets/houses/baus-1/baus-1-11.jpg"
+  ],
+  "scenarios": [
+    "pair"
+  ]
+}

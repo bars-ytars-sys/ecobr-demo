@@ -1,0 +1,41 @@
+{
+  "order": 2,
+  "type": "barnhouse",
+  "name": "Барнхаус 1",
+  "title": "Барнхаус 1 — дом до 6 гостей с отдельными комнатами | Берёзовая роща",
+  "description": "Барнхаус 1 — дом с отдельными комнатами до 6 гостей и банным чаном у пруда. Для семьи и компании друзей. От 14 300 ₽ в сутки.",
+  "tagline": "простор. свобода. простота",
+  "lead": "Комфортный дом с отдельными комнатами для семьи или компании друзей. Открытые пространства и функциональная планировка создают ощущение лёгкости.",
+  "capacity": 6,
+  "banya": false,
+  "chan": true,
+  "badge": "Для мероприятий",
+  "price": {
+    "weekday": 14300,
+    "weekend": 18700
+  },
+  "priceNotes": [
+    "*Стоимость указана при двухместном размещении",
+    "*Банный чан и наполнение для него не входит в стоимость аренды дома"
+  ],
+  "cover": "../../assets/houses/barn-1/barn-1-01.jpg",
+  "gallery": [
+    "../../assets/houses/barn-1/barn-1-01.jpg",
+    "../../assets/houses/barn-1/barn-1-02.jpg",
+    "../../assets/houses/barn-1/barn-1-03.jpg",
+    "../../assets/houses/barn-1/barn-1-04.jpg",
+    "../../assets/houses/barn-1/barn-1-05.jpg",
+    "../../assets/houses/barn-1/barn-1-06.jpg",
+    "../../assets/houses/barn-1/barn-1-07.jpg",
+    "../../assets/houses/barn-1/barn-1-08.jpg",
+    "../../assets/houses/barn-1/barn-1-09.jpg",
+    "../../assets/houses/barn-1/barn-1-10.jpg",
+    "../../assets/houses/barn-1/barn-1-11.jpg",
+    "../../assets/houses/barn-1/barn-1-12.jpg",
+    "../../assets/houses/barn-1/barn-1-13.jpg"
+  ],
+  "scenarios": [
+    "family",
+    "company"
+  ]
+}

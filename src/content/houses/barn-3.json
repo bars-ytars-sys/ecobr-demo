@@ -1,0 +1,35 @@
+{
+  "title": "Барнхаус 3 — дом до 6 гостей для компании | Берёзовая роща",
+  "description": "Барнхаус 3 — просторный дом до 6 гостей с отдельными комнатами и банным чаном для большой компании. От 14 300 ₽ в сутки.",
+  "name": "Барнхаус 3",
+  "type": "barnhouse",
+  "tagline": "масштаб. огонь. встречи.",
+  "lead": "Просторный дом с отдельными комнатами для отдыха большой компанией. Интерьер с характером и атмосфера загородного уюта.",
+  "capacity": 6,
+  "banya": false,
+  "chan": true,
+  "badge": "Для мероприятий",
+  "scenarios": [
+    "company"
+  ],
+  "price": {
+    "weekday": 14300,
+    "weekend": 18700
+  },
+  "priceNotes": [
+    "*Стоимость указана при двухместном размещении",
+    "*Банный чан и наполнение для него не входит в стоимость аренды дома"
+  ],
+  "order": 9,
+  "cover": "../../assets/houses/barn-3/barn-3-01.jpg",
+  "gallery": [
+    "../../assets/houses/barn-3/barn-3-01.jpg",
+    "../../assets/houses/barn-3/barn-3-02.jpg",
+    "../../assets/houses/barn-3/barn-3-03.jpg",
+    "../../assets/houses/barn-3/barn-3-04.jpg",
+    "../../assets/houses/barn-3/barn-3-05.jpg",
+    "../../assets/houses/barn-3/barn-3-06.jpg",
+    "../../assets/houses/barn-3/barn-3-07.jpg",
+    "../../assets/houses/barn-3/barn-3-08.jpg"
+  ]
+}

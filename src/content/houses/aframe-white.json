@@ -1,0 +1,36 @@
+{
+  "order": 7,
+  "type": "aframe",
+  "name": "А-фрейм белый",
+  "title": "А-фрейм белый — светлый дом для двоих с чаном | Берёзовая роща",
+  "description": "А-фрейм белый в Берёзовой роще: светлый треугольный дом до 4 гостей с банным чаном и мангальной зоной. От 10 000 ₽ в сутки, бронирование онлайн.",
+  "tagline": "лёгкость загородных выходных",
+  "lead": "Светлый треугольный дом для атмосферного отдыха вдвоём или с близкими подругами. Пространство, где легко смеяться, разговаривать до ночи и никуда не спешить.",
+  "capacity": 4,
+  "banya": false,
+  "chan": true,
+  "badge": "Идеально для двоих",
+  "price": {
+    "weekday": 10000,
+    "weekend": 17600
+  },
+  "priceNotes": [
+    "*Стоимость указана при двухместном размещении",
+    "*Банный чан и наполнение для него не входит в стоимость аренды дома"
+  ],
+  "cover": "../../assets/houses/aframe-white/aframe-white-01.jpg",
+  "gallery": [
+    "../../assets/houses/aframe-white/aframe-white-01.jpg",
+    "../../assets/houses/aframe-white/aframe-white-02.jpg",
+    "../../assets/houses/aframe-white/aframe-white-03.jpg",
+    "../../assets/houses/aframe-white/aframe-white-04.jpg",
+    "../../assets/houses/aframe-white/aframe-white-05.jpg",
+    "../../assets/houses/aframe-white/aframe-white-06.jpg",
+    "../../assets/houses/aframe-white/aframe-white-07.jpg",
+    "../../assets/houses/aframe-white/aframe-white-08.jpg"
+  ],
+  "scenarios": [
+    "pair",
+    "family"
+  ]
+}

@@ -1,0 +1,33 @@
+---
+import { link, nav, site } from '../data/site';
+---
+
+<footer id="kontakty" class="border-t border-moss bg-night pb-[calc(3.5rem+env(safe-area-inset-bottom))] sm:pb-0">
+  <div class="wrap grid gap-14 py-20 lg:grid-cols-12 lg:py-28">
+    <div class="lg:col-span-5">
+      <p class="label text-brass">Как нас найти</p>
+      <p class="mt-6 font-display text-4xl leading-tight sm:text-5xl">40 минут от&nbsp;Москвы, Солнечногорский район</p>
+      <p class="mt-6 max-w-md leading-relaxed text-stone">{site.address}</p>
+      <div class="mt-6 flex gap-6 text-sm">
+        <a class="link-line" href={site.yandexMaps} rel="noopener" target="_blank">Яндекс Карты ↗</a>
+        <a class="link-line" href={site.telegram} rel="noopener" target="_blank">Telegram ↗</a>
+      </div>
+    </div>
+    <div class="lg:col-span-4 lg:col-start-7">
+      <p class="label text-brass">Бронирование</p>
+      <a href={site.phoneHref} class="mt-6 block font-display text-4xl sm:text-5xl">{site.phone}</a>
+      <p class="mt-3 text-sm text-stone">{site.hours}</p>
+      <p class="mt-8 text-sm text-stone">Сотрудничество: <a class="link-line text-cream" href={`mailto:${site.email}`}>{site.email}</a></p>
+    </div>
+    <nav aria-label="Разделы" class="lg:col-span-2">
+      <p class="label text-brass">Разделы</p>
+      <ul class="mt-6 space-y-3 text-sm">
+        {nav.map((i) => <li><a class="link-line text-cream/80 hover:text-cream" href={link(i.href)}>{i.label}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap flex flex-wrap justify-between gap-3 border-t border-moss py-7 text-xs text-stone">
+    <p>ИП Резниченко В.Ю. · ИНН 502016199950</p>
+    <p>Демо-версия нового сайта · закрыта от индексации</p>
+  </div>
+</footer>

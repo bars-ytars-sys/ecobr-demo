@@ -1,0 +1,36 @@
+{
+  "order": 3,
+  "type": "sfera",
+  "name": "Сфера",
+  "title": "Сфера — дом необычной формы с баней и чаном | Берёзовая роща",
+  "description": "Сфера — дом необычной формы с собственной баней и банным чаном, до 4 гостей. Панорамные окна и берёзы вокруг. От 12 100 ₽ в сутки.",
+  "tagline": "невесомость. тишина. природа.",
+  "lead": "Дом необычной формы с собственной баней на территории. Пространство для отдыха в необычном архитектурном решении.",
+  "capacity": 4,
+  "banya": true,
+  "chan": true,
+  "price": {
+    "weekday": 12100,
+    "weekend": 17600
+  },
+  "priceNotes": [
+    "*Стоимость указана при двухместном размещении",
+    "*Баня, банный чан и наполнение для него не входят в стоимость аренды дома"
+  ],
+  "cover": "../../assets/houses/sfera/sfera-01.jpg",
+  "gallery": [
+    "../../assets/houses/sfera/sfera-01.jpg",
+    "../../assets/houses/sfera/sfera-02.jpg",
+    "../../assets/houses/sfera/sfera-03.jpg",
+    "../../assets/houses/sfera/sfera-04.jpg",
+    "../../assets/houses/sfera/sfera-05.jpg",
+    "../../assets/houses/sfera/sfera-06.jpg",
+    "../../assets/houses/sfera/sfera-07.jpg",
+    "../../assets/houses/sfera/sfera-08.jpg",
+    "../../assets/houses/sfera/sfera-09.jpg",
+    "../../assets/houses/sfera/sfera-10.jpg"
+  ],
+  "scenarios": [
+    "pair"
+  ]
+}

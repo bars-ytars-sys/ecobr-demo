@@ -1,0 +1,35 @@
+{
+  "title": "А-фрейм нео — дом-минимализм на 4 гостей | Берёзовая роща",
+  "description": "А-фрейм нео — минималистичный дом до 4 гостей в холодной палитре: чёткие линии и уединение среди природы. От 10 000 ₽ в сутки.",
+  "name": "А-фрейм нео",
+  "type": "aframe",
+  "tagline": "минимализм. тишина. архитектура",
+  "lead": "Современный А-фрейм в холодной палитре — для тех, кто ценит эстетику и спокойствие. Чёткие линии, чистые формы и ощущение уединения среди природы.",
+  "capacity": 4,
+  "banya": false,
+  "chan": true,
+  "badge": "Хит продаж",
+  "scenarios": [
+    "pair"
+  ],
+  "price": {
+    "weekday": 10000,
+    "weekend": 17600
+  },
+  "priceNotes": [
+    "*Стоимость указана при двухместном размещении",
+    "*Банный чан и наполнение для него не входит в стоимость аренды дома"
+  ],
+  "order": 6,
+  "cover": "../../assets/houses/aframe-neo/aframe-neo-01.jpg",
+  "gallery": [
+    "../../assets/houses/aframe-neo/aframe-neo-01.jpg",
+    "../../assets/houses/aframe-neo/aframe-neo-02.jpg",
+    "../../assets/houses/aframe-neo/aframe-neo-03.jpg",
+    "../../assets/houses/aframe-neo/aframe-neo-04.jpg",
+    "../../assets/houses/aframe-neo/aframe-neo-05.jpg",
+    "../../assets/houses/aframe-neo/aframe-neo-06.jpg",
+    "../../assets/houses/aframe-neo/aframe-neo-07.jpg",
+    "../../assets/houses/aframe-neo/aframe-neo-08.jpg"
+  ]
+}

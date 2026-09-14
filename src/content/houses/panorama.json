@@ -1,0 +1,35 @@
+{
+  "order": 12,
+  "type": "panorama",
+  "name": "Панорама",
+  "title": "Панорама — флагманский дом до 10 гостей с баней | Берёзовая роща",
+  "description": "Панорама — флагманский дом до 10 гостей с баней и банным чаном в Берёзовой роще. Для семьи, друзей и важных событий. От 18 000 ₽ в сутки.",
+  "tagline": "масштаб. статус. уверенность",
+  "lead": "Флагманский дом для отдыха семьей, компанией близких и значимых встреч. Пространство, которое задаёт тон отдыху. На территории — баня с уютной комнатой отдыха, где по желанию могут разместиться ещё 2 гостя.",
+  "capacity": 10,
+  "banya": true,
+  "chan": true,
+  "badge": "Для важных событий",
+  "price": {
+    "weekday": 18000,
+    "weekend": 25000
+  },
+  "priceNotes": [
+    "*Стоимость указана при двухместном размещении, стоимость доп. гостя 2 000 ₽",
+    "*Баня, банный чан и наполнение для него не входят в стоимость аренды дома. Стоимость бани 10 000 ₽"
+  ],
+  "cover": "../../assets/houses/panorama/panorama-01.jpg",
+  "gallery": [
+    "../../assets/houses/panorama/panorama-01.jpg",
+    "../../assets/houses/panorama/panorama-02.jpg",
+    "../../assets/houses/panorama/panorama-03.jpg",
+    "../../assets/houses/panorama/panorama-04.jpg",
+    "../../assets/houses/panorama/panorama-05.jpg",
+    "../../assets/houses/panorama/panorama-06.jpg",
+    "../../assets/houses/panorama/panorama-07.jpg",
+    "../../assets/houses/panorama/panorama-08.jpg"
+  ],
+  "scenarios": [
+    "company"
+  ]
+}

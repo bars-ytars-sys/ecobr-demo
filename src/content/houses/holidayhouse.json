@@ -1,0 +1,36 @@
+{
+  "title": "Холидей хаус — дом с сауной, чаном и флоатингом | Берёзовая роща",
+  "description": "Холидей хаус — дом до 4 гостей с сауной, банным чаном и сухим флоатингом на закрытой территории. От 13 200 ₽ в сутки.",
+  "name": "Холидей хаус",
+  "type": "house",
+  "tagline": "тишина. архитектура. созерцание",
+  "lead": "Очень уютный и просторный дом для семейного отдыха или загородной поездки в компании друзей. В доме изолированная спальная и гостиная с раскладывающимся диваном, закрытая территория, мангальная зона, баня, флоатинг и банный чан",
+  "capacity": 4,
+  "banya": true,
+  "chan": true,
+  "badge": "Сауна и флоатинг",
+  "scenarios": [
+    "pair",
+    "family"
+  ],
+  "price": {
+    "weekday": 13200,
+    "weekend": 18700
+  },
+  "priceNotes": [
+    "*Стоимость указана при двухместном размещении",
+    "*Банный чан и наполнение для него не входит в стоимость аренды дома"
+  ],
+  "order": 10,
+  "cover": "../../assets/houses/holidayhouse/holidayhouse-01.jpg",
+  "gallery": [
+    "../../assets/houses/holidayhouse/holidayhouse-01.jpg",
+    "../../assets/houses/holidayhouse/holidayhouse-02.jpg",
+    "../../assets/houses/holidayhouse/holidayhouse-03.jpg",
+    "../../assets/houses/holidayhouse/holidayhouse-04.jpg",
+    "../../assets/houses/holidayhouse/holidayhouse-05.jpg",
+    "../../assets/houses/holidayhouse/holidayhouse-06.jpg",
+    "../../assets/houses/holidayhouse/holidayhouse-07.jpg",
+    "../../assets/houses/holidayhouse/holidayhouse-08.jpg"
+  ]
+}

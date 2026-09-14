@@ -1,0 +1,37 @@
+---
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { link, rub } from '../data/site';
+
+interface Props {
+  house: CollectionEntry<'houses'>;
+  sizes?: string;
+}
+const { house, sizes = '(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 82vw' } = Astro.props;
+const h = house.data;
+---
+
+<article class="house-card group relative" data-scenarios={h.scenarios.join(' ')}>
+  <a href={link(`/doma/${house.id}`)} class="block">
+    <div class="relative overflow-hidden bg-forest">
+      <Picture
+        formats={['avif', 'webp']}
+        src={h.cover}
+        alt={`${h.name} — дом в Берёзовой роще`}
+        widths={[360, 540, 760]}
+        sizes={sizes}
+        class="aspect-[4/5] w-full object-cover sm:aspect-[3/4] transition duration-[1400ms] ease-[var(--ease-soft)] group-hover:scale-[1.05]"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-night/90 via-night/10 to-transparent"></div>
+      {h.badge && <span class="label absolute top-5 left-5 text-[0.6rem] text-cream/90">{h.badge}</span>}
+      <div class="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+        <p class="font-display text-lg text-cream/80 italic">{h.tagline}</p>
+        <h3 class="mt-1 text-[2rem] leading-none sm:text-4xl">{h.name}</h3>
+        <div class="mt-4 flex items-center justify-between border-t border-cream/20 pt-4 text-sm">
+          <span class="text-cream/85">до {h.capacity} гостей{h.banya ? ' · баня' : ''}</span>
+          <span>от {rub(h.price.weekday)}</span>
+        </div>
+      </div>
+    </div>
+  </a>
+</article>
