@@ -16,8 +16,8 @@ export default defineConfig({
       provider: fontProviders.google(),
       name: 'Cormorant',
       cssVariable: '--font-cormorant',
-      // optional + preload: без прыжка крупных заголовков при подмене шрифта (CLS)
-      display: 'optional',
+      // swap + preload: фирменный шрифт виден всегда (optional на первом заходе оставлял запасной шрифт)
+      display: 'swap',
       weights: ['400', '500'],
       styles: ['normal', 'italic'],
       subsets: ['cyrillic', 'latin'],
