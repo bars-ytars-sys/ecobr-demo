@@ -5,33 +5,36 @@ import { link, rub } from '../data/site';
 
 interface Props {
   house: CollectionEntry<'houses'>;
-  sizes?: string;
+  headingLevel?: 'h2' | 'h3';
 }
-const { house, sizes = '(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 82vw' } = Astro.props;
+const { house, headingLevel = 'h3' } = Astro.props;
 const h = house.data;
+const Heading = headingLevel;
 ---
 
-<article class="house-card group relative" data-scenarios={h.scenarios.join(' ')}>
-  <a href={link(`/doma/${house.id}`)} class="block">
-    <div class="relative overflow-hidden bg-forest">
-      <Picture
-        formats={['avif', 'webp']}
-        src={h.cover}
-        alt={`${h.name} — дом в Берёзовой роще`}
-        widths={[360, 540, 760]}
-        sizes={sizes}
-        class="aspect-[4/5] w-full object-cover sm:aspect-[3/4] transition duration-[1400ms] ease-[var(--ease-soft)] group-hover:scale-[1.05]"
-      />
-      <div class="absolute inset-0 bg-gradient-to-t from-night/90 via-night/10 to-transparent"></div>
-      {h.badge && <span class="label absolute top-5 left-5 text-[0.6rem] text-cream/90">{h.badge}</span>}
-      <div class="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-        <p class="font-display text-lg text-cream/80 italic">{h.tagline}</p>
-        <h3 class="mt-1 text-[2rem] leading-none sm:text-4xl">{h.name}</h3>
-        <div class="mt-4 flex items-center justify-between border-t border-cream/20 pt-4 text-sm">
-          <span class="text-cream/85">до {h.capacity} гостей{h.banya ? ' · баня' : ''}</span>
-          <span>от {rub(h.price.weekday)}</span>
-        </div>
-      </div>
-    </div>
+<article class="card group flex h-full flex-col overflow-hidden">
+  <a href={link(`/doma/${house.id}`)} class="relative block overflow-hidden" tabindex="-1" aria-hidden="true">
+    <Picture
+      formats={['avif', 'webp']}
+      src={h.cover}
+      alt=""
+      widths={[360, 540, 720]}
+      sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 90vw"
+      class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-105"
+    />
+    {h.badge && <span class="chip absolute top-3 left-3 text-[0.6rem]!">{h.badge}</span>}
   </a>
+  <div class="flex flex-1 flex-col p-5">
+    <p class="w-fit rounded-[6px] bg-highlight/70 px-2 py-0.5 text-xs font-semibold">{h.tagline}</p>
+    <Heading class="mt-3 text-xl">
+      <a href={link(`/doma/${house.id}`)} class="hover:text-mint-dark">{h.name}</a>
+    </Heading>
+    <ul class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted">
+      <li>до {h.capacity} гостей</li>
+      {h.chan && <li>банный чан</li>}
+      {h.banya && <li>баня</li>}
+    </ul>
+    <p class="mt-4 font-display text-lg">от <span class="mark">{rub(h.price.weekday)}</span> <span class="font-sans text-xs text-muted normal-case">/ сутки</span></p>
+    <a href={link(`/doma/${house.id}`)} class="btn-outline mt-5 w-full">Подробнее о доме</a>
+  </div>
 </article>

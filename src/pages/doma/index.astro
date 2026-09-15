@@ -3,23 +3,27 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import HouseCard from '../../components/HouseCard.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Branch from '../../components/Branch.astro';
+import LeadForm from '../../components/LeadForm.astro';
 import { site } from '../../data/site';
 
 const houses = (await getCollection('houses')).sort((a, b) => a.data.order - b.data.order);
 const crumbs = [
   { href: '/', label: 'Главная' },
-  { href: '/doma', label: 'Дома' },
+  { href: '/doma', label: 'Каталог домов' },
 ];
+// Группы под кластеры запросов: «дом для двоих», «для семьи», «для компании»
 const groups = [
-  { id: 'pair', title: 'Вдвоём', note: 'Для романтических выходных и тишины' },
-  { id: 'family', title: 'Семьёй', note: 'Отдельные спальни и простор для семейного отдыха' },
-  { id: 'company', title: 'Компанией', note: 'Большие дома для праздников и встреч' },
+  { id: 'pair', title: 'Дома для двоих', note: 'Для романтических выходных, свиданий и тишины' },
+  { id: 'family', title: 'Дома для семейного отдыха', note: 'Отдельные спальни и простор для отдыха с детьми' },
+  { id: 'company', title: 'Дома для компании', note: 'Большие дома для праздников и встреч с друзьями' },
 ] as const;
 const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'Дома Берёзовой рощи',
+    name: 'Каталог домов базы отдыха «Берёзовая роща»',
+    numberOfItems: houses.length,
     itemListElement: houses.map((h, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site.url}/doma/${h.id}`, name: h.data.name })),
   },
 ];
@@ -27,33 +31,32 @@ const jsonLd = [
 
 <Base
   title="Каталог домов для отдыха в Берёзовой роще"
-  description="Дизайнерские дома в Берёзовой роще: А-фреймы, барнхаусы, шале, Сфера и Панорама. С банным чаном и баней, от 2 до 10 гостей. Цены и фото."
+  description="Дома базы отдыха «Берёзовая роща»: А-фреймы, барнхаусы, шале, Сфера и Панорама с банным чаном и баней, от 2 до 10 гостей. Цены и фото."
   jsonLd={jsonLd}
 >
-  <section class="wrap pt-28 pb-12 sm:pt-44 sm:pb-16">
+  <section class="wrap pt-6 pb-4">
     <Breadcrumbs items={crumbs} />
-    <div class="mt-12 grid gap-8 lg:grid-cols-12 lg:items-end">
-      <h1 class="text-[3.6rem] leading-[0.9] sm:text-8xl lg:col-span-7 lg:text-[9rem]">Дома</h1>
-      <p class="max-w-md leading-relaxed text-stone lg:col-span-4 lg:col-start-9">
-        Каталог домов для разных сценариев отдыха. В демо — 12 домов на фото и ценах с текущего сайта, остальные добавляются карточкой в CMS.
-      </p>
-    </div>
+    <h1 class="h-section mt-8">Каталог домов для разных <br class="hidden sm:block" />сценариев отдыха</h1>
+    <p class="mt-4 max-w-2xl text-muted">
+      Каждый домик на базе отдыха «Берёзовая роща» — уникальный проект со стильным дизайном и собственной территорией. У одних домов есть банные чаны, у других — бани для полного релакса.
+    </p>
+    <nav class="mt-6 flex flex-wrap gap-2" aria-label="Разделы каталога">
+      {groups.map((g) => <a href={`#${g.id}`} class="chip hover:bg-mint-soft">{g.title}</a>)}
+    </nav>
+    <Branch class="mt-8" />
   </section>
 
   {
-    groups.map((g, gi) => (
-      <section class="wrap border-t border-moss py-16 sm:py-24">
-        <div class="mb-12 grid gap-4 lg:grid-cols-12">
-          <p class="label text-brass lg:col-span-3">{String(gi + 1).padStart(2, '0')}</p>
-          <div class="lg:col-span-9">
-            <h2 class="text-[2.5rem] leading-[1.02] sm:text-6xl">{g.title}</h2>
-            <p class="mt-3 text-stone">{g.note}</p>
-          </div>
-        </div>
-        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    groups.map((g) => (
+      <section id={g.id} class="wrap scroll-mt-24 py-8" aria-labelledby={`${g.id}-title`}>
+        <h2 id={`${g.id}-title`} class="font-display text-2xl uppercase sm:text-3xl">{g.title}</h2>
+        <p class="mt-2 text-muted">{g.note}</p>
+        <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {houses.filter((h) => h.data.scenarios.includes(g.id)).map((h) => <HouseCard house={h} />)}
         </div>
       </section>
     ))
   }
+
+  <LeadForm />
 </Base>

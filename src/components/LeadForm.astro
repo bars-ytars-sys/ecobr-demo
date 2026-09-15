@@ -1,0 +1,33 @@
+---
+// Форма «Подобрать дом»: на проде — Astro Action → Telegram/CRM. В демо заявка не отправляется (честно сообщаем)
+---
+
+<section id="lead" class="wrap py-8" aria-labelledby="lead-title">
+  <div class="card relative overflow-hidden px-6 py-12 text-center sm:px-12 sm:py-16">
+    <div class="pointer-events-none absolute -bottom-32 left-10 size-96 rounded-full bg-mint/30 blur-3xl"></div>
+    <div class="pointer-events-none absolute -top-24 right-10 size-80 rounded-full bg-highlight/40 blur-3xl"></div>
+    <h2 id="lead-title" class="h-section relative mx-auto max-w-3xl">Ваш идеальный отдых начинается здесь</h2>
+    <p class="relative mx-auto mt-4 max-w-md text-muted">Иногда достаточно одного решения, чтобы всё внутри стало тише</p>
+    <form class="lead-form relative mx-auto mt-8 grid max-w-3xl gap-3 sm:grid-cols-[1fr_1fr_auto]">
+      <label class="sr-only" for="lead-name">Ваше имя</label>
+      <input id="lead-name" name="name" required autocomplete="given-name" placeholder="Ваше имя" class="rounded-[10px] border border-line bg-page px-4 py-3.5 outline-none focus:border-mint" />
+      <label class="sr-only" for="lead-phone">Телефон</label>
+      <input id="lead-phone" name="phone" required type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (000) 000-00-00" class="rounded-[10px] border border-line bg-page px-4 py-3.5 outline-none focus:border-mint" />
+      <button type="submit" class="btn-forest">Подобрать дом</button>
+      <label class="flex items-center gap-2 text-left text-xs text-muted sm:col-span-3">
+        <input type="checkbox" required checked class="size-4 accent-[#2ed8a3]" />
+        Я согласен(на) с Политикой конфиденциальности
+      </label>
+      <p class="lead-ok hidden text-sm text-mint-dark sm:col-span-3" role="status">Демо: заявка не отправляется. На сайте она придёт менеджеру в Telegram.</p>
+    </form>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('.lead-form').forEach((f) =>
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      f.querySelector('.lead-ok')?.classList.remove('hidden');
+    }),
+  );
+</script>

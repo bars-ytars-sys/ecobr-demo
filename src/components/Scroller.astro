@@ -1,0 +1,28 @@
+---
+// Горизонтальная лента карточек со стрелками: без JS листается пальцем, все ссылки остаются в HTML
+interface Props {
+  label: string;
+  class?: string;
+}
+const { label, class: cls = '' } = Astro.props;
+---
+
+<div class:list={['scroll-block relative', cls]} role="region" aria-label={label}>
+  <div class="scroller px-4 sm:px-6 lg:px-[max(1.5rem,calc((100vw-1200px)/2+1.5rem))]">
+    <slot />
+  </div>
+  <button type="button" data-dir="-1" class="prev absolute top-[35%] left-2 hidden size-11 place-items-center rounded-full bg-mint text-[#0b3b2c] shadow-lg lg:grid" aria-label="Назад">‹</button>
+  <button type="button" data-dir="1" class="next absolute top-[35%] right-2 hidden size-11 place-items-center rounded-full bg-mint text-[#0b3b2c] shadow-lg lg:grid" aria-label="Вперёд">›</button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.scroll-block').forEach((b) => {
+    const track = b.querySelector<HTMLElement>('.scroller')!;
+    b.querySelectorAll<HTMLButtonElement>('button[data-dir]').forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const first = track.firstElementChild as HTMLElement | null;
+        track.scrollBy({ left: Number(btn.dataset['dir']) * ((first?.offsetWidth ?? 300) + 16) });
+      }),
+    );
+  });
+</script>

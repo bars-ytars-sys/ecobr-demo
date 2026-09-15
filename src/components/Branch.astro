@@ -1,0 +1,19 @@
+---
+// Декоративная веточка-разделитель, как на текущем сайте (inline SVG вместо тяжёлых картинок)
+interface Props {
+  class?: string;
+}
+const { class: cls = '' } = Astro.props;
+const leaves = Array.from({ length: 11 }, (_, i) => i);
+---
+
+<svg class:list={['mx-auto h-10 w-[min(440px,90%)] text-leaf', cls]} viewBox="0 0 440 40" fill="none" aria-hidden="true">
+  <path d="M4 22 C120 14 320 14 436 22" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+  {
+    leaves.map((i) => {
+      const x = 30 + i * 38;
+      const up = i % 2 === 0;
+      return <path d={up ? `M${x} 19 q6 -14 16 -12 q-4 10 -16 12Z` : `M${x} 20 q8 12 17 9 q-6 -9 -17 -9Z`} fill="currentColor" opacity="0.85" />;
+    })
+  }
+</svg>

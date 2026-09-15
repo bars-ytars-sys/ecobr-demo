@@ -15,13 +15,18 @@ export const site = {
   email: 'BR.BP.House@yandex.ru',
 } as const;
 
+// Меню как на текущем сайте — те же URL (перенос 1:1)
 export const nav = [
-  { href: '/doma', label: 'Дома' },
-  { href: '/#banya', label: 'Баня и чан' },
-  { href: '/#spa', label: 'SPA' },
-  { href: '/#restoran', label: 'Ресторан' },
-  { href: '/#vip', label: 'VIP-программы' },
-  { href: '/#kontakty', label: 'Контакты' },
+  { href: "/special", label: "Специальные предложения" },
+  { href: "/about", label: "О базе" },
+  { href: "/doma", label: "Каталог домов" },
+  { href: "/aktivnosti-v-beryozovoj-roshhe", label: "Активности" },
+  { href: "/vip-programmy", label: "VIP-программы" },
+  { href: "/deti", label: "Отдых с детьми" },
+  { href: "/spa", label: "SPA и релакс" },
+  { href: "/banchan", label: "Бани и банные чаны" },
+  { href: "/kartabr", label: "Карта территории" },
+  { href: "/contacts", label: "Контакты" },
 ] as const;
 
 export const rub = (n: number): string => `${n.toLocaleString('ru-RU')} ₽`;

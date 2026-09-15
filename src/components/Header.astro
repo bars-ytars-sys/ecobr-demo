@@ -1,49 +1,41 @@
 ---
+import logo from '../assets/v2/brand/brand-02.svg';
 import { link, nav, site } from '../data/site';
 ---
 
-{/* Прозрачная шапка поверх фото; при прокрутке — тёмная подложка */}
-<header class="site-header fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter] duration-500">
-  <div class="wrap flex h-18 items-center justify-between gap-6 lg:h-22">
-    <a href={link('/')} class="flex flex-col leading-none">
-      <span class="font-display text-[1.5rem] tracking-tight sm:text-[1.65rem] xl:text-[1.9rem]">Берёзовая роща</span>
-      <span class="label mt-1 text-[0.55rem] text-cream/60">экобаза · подмосковье</span>
+<header class="sticky top-0 z-50 bg-white/95 shadow-[0_1px_0_rgb(0_0_0/0.05)] backdrop-blur">
+  <div class="wrap flex h-16 items-center justify-between gap-3 lg:h-[72px]">
+    <a href={link('/')} class="shrink-0" aria-label="Берёзовая роща — главная">
+      <img src={logo.src} width="120" height="44" alt="Берёзовая роща" class="h-9 w-auto lg:h-11" />
     </a>
 
-    <nav aria-label="Основное меню" class="hidden lg:block">
-      <ul class="flex items-center gap-5 text-[0.78rem] tracking-wide xl:gap-9">
-        {nav.map((i) => <li><a class="link-line text-cream/80 hover:text-cream" href={link(i.href)}>{i.label}</a></li>)}
-      </ul>
-    </nav>
-
-    <div class="flex items-center gap-6">
-      <a href={site.phoneHref} class="hidden text-sm tracking-wide md:inline lg:hidden xl:inline">{site.phone}</a>
-      <a href={site.booking} class="btn-brass hidden px-5! py-3! sm:inline-flex">Забронировать</a>
-      <details class="relative lg:hidden">
-        <summary class="flex size-11 cursor-pointer list-none items-center justify-center ring-1 ring-cream/30" aria-label="Меню">
-          <svg width="20" height="10" viewBox="0 0 20 10" fill="none" aria-hidden="true"><path d="M0 1h20M0 9h20" stroke="currentColor" stroke-width="1.2" /></svg>
-        </summary>
-        <div class="absolute right-0 mt-3 w-72 bg-forest p-7 shadow-2xl ring-1 ring-moss">
-          <ul class="space-y-4 font-display text-2xl">
-            {nav.map((i) => <li><a href={link(i.href)}>{i.label}</a></li>)}
+    <div class="ml-auto flex items-center gap-3 lg:gap-4">
+      <div class="text-right leading-tight">
+        <p class="hidden text-[0.7rem] text-muted sm:block">Отдел бронирования работает с 9:00 до 24:00</p>
+        <a href={site.phoneHref} class="font-display text-[0.8rem] sm:text-base">{site.phone}</a>
+      </div>
+      <a href={`${link('/')}#lead`} class="btn-outline hidden px-4! py-3! md:inline-flex">Обратный звонок</a>
+      <a href={site.booking} class="btn-mint hidden px-4! py-3! lg:inline-flex">Проверить даты и забронировать</a>
+      <details class="menu relative">
+        <summary class="btn-outline cursor-pointer list-none rounded-full! px-4! py-2.5!">Меню</summary>
+        <nav aria-label="Основное меню" class="card absolute right-0 mt-3 w-72 p-6">
+          <ul class="space-y-3 font-display text-sm uppercase">
+            {nav.map((i) => <li><a class="hover:text-mint-dark" href={link(i.href)}>{i.label}</a></li>)}
           </ul>
-          <a href={site.phoneHref} class="mt-7 block text-lg">{site.phone}</a>
-          <p class="mt-1 text-xs text-stone">{site.hours}</p>
-        </div>
+          <a href={site.booking} class="btn-mint mt-6 w-full lg:hidden">Проверить даты</a>
+        </nav>
       </details>
     </div>
   </div>
 </header>
 
 <script>
-  const h = document.querySelector<HTMLElement>('.site-header');
-  if (h) {
-    const on = () => {
-      const s = window.scrollY > 60;
-      h.classList.toggle('bg-night/85', s);
-      h.classList.toggle('backdrop-blur-md', s);
-    };
-    on();
-    window.addEventListener('scroll', on, { passive: true });
-  }
+  // Меню закрывается по клику вне и по Esc
+  const menu = document.querySelector<HTMLDetailsElement>('details.menu');
+  document.addEventListener('click', (e) => {
+    if (menu?.open && !menu.contains(e.target as Node)) menu.open = false;
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu) menu.open = false;
+  });
 </script>

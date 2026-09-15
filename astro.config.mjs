@@ -13,23 +13,21 @@ export default defineConfig({
   image: { layout: 'constrained', responsiveStyles: true, service: { entrypoint: 'astro/assets/services/sharp', config: { avif: { quality: 68 }, webp: { quality: 82 } } } },
   fonts: [
     {
-      provider: fontProviders.google(),
-      name: 'Cormorant',
-      cssVariable: '--font-cormorant',
-      // swap + preload: фирменный шрифт виден всегда (optional на первом заходе оставлял запасной шрифт)
-      display: 'swap',
-      weights: ['400', '500'],
-      styles: ['normal', 'italic'],
-      subsets: ['cyrillic', 'latin'],
-      fallbacks: ['Georgia', 'serif'],
+      // Фирменный шрифт заголовков ecobr.ru (тот же файл, что на Тильде)
+      provider: fontProviders.local(),
+      name: "DespairDisplay",
+      cssVariable: "--font-despair",
+      fallbacks: ["Arial", "sans-serif"],
+      options: { variants: [{ src: ["./src/assets/fonts/DespairDisplay-Bold.woff"], weight: "700", style: "normal" }] },
     },
     {
+      // TildaSans доступен только на Тильде — ближайшая открытая замена
       provider: fontProviders.google(),
-      name: 'Manrope',
-      cssVariable: '--font-manrope',
-      weights: ['400', '500', '600'],
-      subsets: ['cyrillic', 'latin'],
-      fallbacks: ['system-ui', 'sans-serif'],
+      name: "Manrope",
+      cssVariable: "--font-manrope",
+      weights: ["400", "500", "600", "700"],
+      subsets: ["cyrillic", "latin"],
+      fallbacks: ["Arial", "sans-serif"],
     },
   ],
   vite: { plugins: [tailwindcss()] },

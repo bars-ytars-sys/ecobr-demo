@@ -1,21 +1,17 @@
 ---
-import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import { link, site } from '../data/site';
-import bg from '../assets/site/hero-birch.jpg';
 ---
 
-<Base title="Страница не найдена | Берёзовая роща" description="Такой страницы нет, но в Берёзовой роще есть дизайнерские дома, SPA и банные чаны. Выберите дом или позвоните в отдел бронирования.">
-  <section class="relative isolate flex min-h-svh items-center overflow-hidden text-center">
-    <Picture formats={['avif', 'webp']} src={bg} alt="" widths={[640, 1080, 1600, 2400]} sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover" />
-    <div class="absolute inset-0 -z-10 bg-night/65"></div>
-    <div class="wrap">
-      <p class="label text-brass">Заблудились в роще</p>
-      <h1 class="mt-6 text-6xl sm:text-8xl">Такой страницы нет</h1>
-      <p class="mx-auto mt-6 max-w-lg text-cream/80">В демо собраны главная, каталог и 12 домов. Остальные разделы появятся при переносе — с теми же адресами, что сейчас.</p>
-      <div class="mt-10 flex flex-wrap justify-center gap-4">
-        <a href={link('/doma')} class="btn-brass">Выбрать дом</a>
-        <a href={site.phoneHref} class="btn-line">{site.phone}</a>
+<Base title="Страница не найдена | Берёзовая роща" description="Такой страницы нет, но в Берёзовой роще есть 22 дизайнерских дома, SPA и банные чаны. Выберите дом или позвоните в отдел бронирования.">
+  <section class="wrap py-20 text-center sm:py-28">
+    <div class="card mx-auto max-w-3xl px-6 py-14">
+      <p class="font-display text-7xl text-mint">404</p>
+      <h1 class="h-section mt-4">Такой страницы нет</h1>
+      <p class="mx-auto mt-4 max-w-lg text-muted">В демо собраны главная, каталог и 12 домов. Остальные разделы переносятся с теми же адресами, что на текущем сайте.</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href={link('/doma')} class="btn-mint">Каталог домов</a>
+        <a href={site.phoneHref} class="btn-outline">{site.phone}</a>
       </div>
     </div>
   </section>

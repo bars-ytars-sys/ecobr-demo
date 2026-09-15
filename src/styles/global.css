@@ -1,57 +1,49 @@
 @import 'tailwindcss';
 
-/* «Вечер в роще»: палитра снята с вечерней съёмки базы — тёмный лес, тёплое дерево, латунь ламп, берёзовая кора */
+/* Дизайн-система текущего ecobr.ru: светлый фон, белые карточки, мятный акцент, заголовки Despair Display капсом.
+   Отличия от Тильды — только там, где страдала доступность: тёмный текст на мятных кнопках (контраст ≥ 4.5). */
 @theme {
-  --color-night: #10120e;
-  --color-forest: #181b15;
-  --color-moss: #2b3026;
-  --color-cream: #eee6d5;
-  --color-stone: #aaa38f;
-  --color-brass: #c8a06a;
-  --color-birch: #f0ebe1;
-  --color-ink: #1b1d17;
-  --color-bark: #5d5747;
+  --color-page: #f4f6fb;
+  --color-card: #ffffff;
+  --color-ink: #1a1b19;
+  --color-ink-2: #222831;
+  --color-muted: #5f636b;
+  --color-line: #e6e8ee;
+  --color-mint: #2ed8a3;
+  --color-mint-dark: #0b7a58;
+  --color-mint-soft: #e3f8f0;
+  --color-highlight: #9aed9b;
+  --color-forest: #1e5128;
+  --color-leaf: #c2a878;
 
-  --font-display: var(--font-cormorant), Georgia, serif;
-  --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-display: var(--font-despair), Arial, sans-serif;
+  --font-sans: var(--font-manrope), Arial, sans-serif;
 
-  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius-card: 20px;
+  --shadow-card: 0 10px 40px -18px rgb(26 27 25 / 0.18);
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
-    background: var(--color-night);
   }
   body {
-    @apply bg-night font-sans text-cream antialiased;
-  }
-  /* Лёгкое плёночное зерно — объединяет разные съёмки в одну картинку */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: 60;
-    pointer-events: none;
-    opacity: 0.05;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    @apply bg-page font-sans text-ink antialiased;
   }
   h1,
   h2,
   h3 {
-    @apply font-display font-normal;
-    letter-spacing: -0.015em;
+    @apply font-display uppercase;
+    letter-spacing: 0.01em;
+    line-height: 1.05;
     text-wrap: balance;
   }
   p {
     text-wrap: pretty;
   }
-  ::selection {
-    @apply bg-brass text-night;
-  }
   :focus-visible {
-    @apply outline-1 outline-offset-4 outline-brass;
+    @apply outline-2 outline-offset-2 outline-mint-dark;
   }
   @media (prefers-reduced-motion: reduce) {
     html {
@@ -67,52 +59,32 @@
 }
 
 @utility wrap {
-  @apply mx-auto w-full max-w-[88rem] px-5 sm:px-10;
+  @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6;
 }
-@utility label {
-  @apply text-[0.7rem] font-medium tracking-[0.28em] uppercase;
+@utility card {
+  @apply rounded-[var(--radius-card)] bg-card shadow-[var(--shadow-card)];
 }
-@utility link-line {
-  @apply bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-1 transition-[background-size] duration-500 hover:bg-[length:100%_1px];
+@utility h-section {
+  @apply font-display text-[1.9rem] leading-[1.05] uppercase sm:text-5xl lg:text-[3.4rem];
 }
 @utility btn {
-  @apply inline-flex items-center justify-center gap-3 px-7 py-4 text-[0.78rem] font-semibold tracking-[0.18em] whitespace-nowrap uppercase transition duration-500;
-  transition-timing-function: var(--ease-soft);
+  @apply inline-flex items-center justify-center gap-2 rounded-[10px] px-5 py-3.5 text-center font-display text-[0.78rem] leading-tight tracking-[0.02em] uppercase transition duration-300;
 }
-@utility btn-brass {
-  @apply btn bg-brass text-night hover:bg-cream;
+@utility btn-mint {
+  @apply btn bg-mint text-[#0b3b2c] shadow-[0_8px_20px_-8px_rgb(46_216_163/0.7)] hover:bg-[#25c794];
 }
-@utility btn-line {
-  @apply btn text-current ring-1 ring-current/35 hover:ring-current;
+@utility btn-outline {
+  @apply btn bg-white text-mint-dark ring-1 ring-mint hover:bg-mint-soft;
 }
-
-/* Медленная смена кадров в первом экране */
-@keyframes slide {
-  0% {
-    opacity: 0;
-    transform: scale(1.08);
-  }
-  6% {
-    opacity: 1;
-  }
-  25% {
-    opacity: 1;
-  }
-  31% {
-    opacity: 0;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-  }
+@utility btn-forest {
+  @apply btn bg-forest text-white hover:bg-[#173f1f];
 }
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+@utility chip {
+  @apply inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 font-display text-[0.7rem] uppercase shadow-sm;
+}
+@utility mark {
+  @apply rounded-[6px] bg-highlight px-1.5;
+}
+@utility scroller {
+  @apply flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
 }

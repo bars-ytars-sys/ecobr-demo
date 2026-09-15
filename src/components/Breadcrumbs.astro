@@ -12,13 +12,13 @@ const ld = {
 };
 ---
 
-<nav aria-label="Хлебные крошки" class="label text-[0.62rem] text-cream/70">
-  <ol class="flex flex-wrap items-center gap-3">
+<nav aria-label="Хлебные крошки" class="text-sm">
+  <ol class="flex flex-wrap items-center gap-2">
     {
       items.map((c, i) => (
-        <li class="flex items-center gap-3">
-          {i < items.length - 1 ? <a class="link-line hover:text-cream" href={link(c.href)}>{c.label}</a> : <span aria-current="page" class="text-cream">{c.label}</span>}
-          {i < items.length - 1 && <span aria-hidden="true">—</span>}
+        <li class="flex items-center gap-2">
+          {i < items.length - 1 ? <a class="text-ink hover:text-mint-dark" href={link(c.href)}>{c.label}</a> : <span aria-current="page" class="text-mint-dark">{c.label}</span>}
+          {i < items.length - 1 && <span class="text-muted" aria-hidden="true">»</span>}
         </li>
       ))
     }
