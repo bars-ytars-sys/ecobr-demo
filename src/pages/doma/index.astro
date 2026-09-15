@@ -40,7 +40,7 @@ const jsonLd = [
       <Picture formats={['avif', 'webp']} src={cover} alt="" widths={[800, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover" />
       <div class="absolute inset-0 -z-10 bg-gradient-to-r from-black/75 via-black/45 to-black/10"></div>
       <div class="[&_a]:text-white/80 [&_span]:text-white"><Breadcrumbs items={crumbs} /></div>
-      <h1 class="mt-8 max-w-3xl text-[2.3rem] leading-[1] sm:text-6xl lg:text-7xl" data-reveal>Каталог домов для разных сценариев отдыха</h1>
+      <h1 class="mt-6 max-w-3xl text-[2rem] leading-[1.02] sm:mt-8 sm:text-6xl lg:text-7xl" data-reveal>Каталог домов для разных сценариев отдыха</h1>
       <p class="mt-4 max-w-xl text-white/85" data-reveal>Каждый домик — уникальный проект со стильным дизайном и собственной территорией. У одних домов есть банные чаны, у других — бани.</p>
       <nav class="mt-8 flex flex-wrap gap-2" aria-label="Разделы каталога" data-reveal>
         {groups.map((g) => <a href={`#${g.id}`} class="glass-dark rounded-full px-4 py-2.5 font-display text-xs uppercase hover:bg-white hover:text-ink">{g.title}</a>)}

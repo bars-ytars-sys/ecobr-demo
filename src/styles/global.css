@@ -2,18 +2,20 @@
 
 /* Фирменный стиль ecobr (мятный, Despair Display) в подаче открытьбазу.рф:
    скруглённые «медиа-карточки» с отступом, стекло, крупные цифры, тёмные фото-секции */
+/* Сезонная тема «Осень»: тёплый бежевый, карамель, тёмный орех. Имена токенов прежние (mint/teal/night) —
+   сезон меняется только здесь. Летняя мятная тема: #2ed8a3 / #0b7a58 / #dff7ee / #1f6f5c / #1c2724 / #eef1f3 */
 @theme {
-  --color-page: #eef1f3;
-  --color-card: #ffffff;
-  --color-ink: #1d2623;
-  --color-muted: #5b6662;
-  --color-line: #dfe5e3;
-  --color-mint: #2ed8a3;
-  --color-mint-dark: #0b7a58;
-  --color-mint-soft: #dff7ee;
-  --color-teal: #1f6f5c;
-  --color-night: #1c2724;
-  --color-highlight: #9aed9b;
+  --color-page: #f4ede2;
+  --color-card: #fffbf5;
+  --color-ink: #2b231b;
+  --color-muted: #6d6152;
+  --color-line: #e7dccb;
+  --color-mint: #e0a15a;
+  --color-mint-dark: #97581a;
+  --color-mint-soft: #f6e7d2;
+  --color-teal: #7a5530;
+  --color-night: #2f271f;
+  --color-highlight: #f2c98f;
 
   --font-display: var(--font-despair), Arial, sans-serif;
   --font-sans: var(--font-manrope), Arial, sans-serif;
@@ -80,7 +82,7 @@
   @apply inline-flex items-center justify-center gap-2.5 rounded-full px-6 py-4 text-center font-display text-[0.78rem] tracking-[0.04em] uppercase transition duration-300 ease-[var(--ease-out)];
 }
 @utility btn-mint {
-  @apply btn bg-mint text-[#083a2b] shadow-[0_12px_30px_-12px_rgb(46_216_163/0.9)] hover:-translate-y-0.5 hover:bg-[#3fe3b0];
+  @apply btn bg-mint text-[#2a1606] shadow-[0_12px_30px_-12px_rgb(224_161_90/0.8)] hover:-translate-y-0.5 hover:bg-[#e9b273];
 }
 @utility btn-dark {
   @apply btn bg-night text-white hover:-translate-y-0.5 hover:bg-black;

@@ -108,22 +108,22 @@ const jsonLd = [
       ></video>
       <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_30%_60%,rgb(0_0_0/0.55),rgb(0_0_0/0.15)_70%)]"></div>
 
-      <div class="wrap pt-24 pb-40 sm:pb-44">
-        <a href={link('/special')} class="inline-flex max-w-full items-center gap-3 rounded-full bg-mint py-1.5 pr-4 pl-1.5 text-sm font-semibold text-[#083a2b] shadow-lg transition hover:bg-[#3fe3b0]" data-reveal>
+      <div class="wrap pt-20 pb-36 sm:pt-24 sm:pb-44">
+        <a href={link('/special')} class="inline-flex max-w-full items-center gap-3 rounded-full bg-mint py-1.5 pr-4 pl-1.5 text-sm font-semibold text-[#2a1606] shadow-lg transition hover:bg-[#e9b273]" data-reveal>
           <span class="rounded-full bg-white px-2.5 py-1 text-xs">Тёплая осень</span>
           <span class="truncate">Ароматный чан в подарок</span>
           <span aria-hidden="true">→</span>
         </a>
         {/* H1 дословно с текущего сайта — ключевой запрос в начале */}
-        <h1 class="mt-6 max-w-4xl text-[2.1rem] leading-[1.02] [text-shadow:0_2px_30px_rgb(0_0_0/0.35)] sm:text-6xl lg:text-[4.2rem]" data-reveal style="--d:1">
+        <h1 class="mt-5 max-w-4xl text-[1.85rem] leading-[1.04] sm:mt-6 [text-shadow:0_2px_30px_rgb(0_0_0/0.35)] sm:text-6xl lg:text-[4.2rem]" data-reveal style="--d:1">
           База отдыха «Берёзовая роща» с&nbsp;питанием и&nbsp;SPA в&nbsp;Подмосковье
         </h1>
-        <p class="mt-5 max-w-lg text-base text-white/90 sm:text-lg" data-reveal style="--d:2">
+        <p class="mt-4 max-w-lg text-[0.95rem] text-white/90 sm:mt-5 sm:text-lg" data-reveal style="--d:2">
           22 дизайнерских дома среди берёз, SPA-комплекс, бани и банные чаны, ресторан и ферма — в 40 минутах от Москвы.
         </p>
-        <div class="mt-7 flex flex-wrap gap-3" data-reveal style="--d:3">
-          <a href={link('/doma')} class="btn bg-white text-ink hover:bg-mint">Выбрать дом</a>
-          <a href={site.phoneHref} class="btn-ghost">{site.phone}</a>
+        <div class="mt-6 flex flex-wrap gap-3 sm:mt-7" data-reveal style="--d:3">
+          <a href={link('/doma')} class="btn flex-1 bg-white text-ink hover:bg-mint sm:flex-none">Выбрать дом</a>
+          <a href={site.phoneHref} class="btn-ghost hidden sm:inline-flex">{site.phone}</a>
         </div>
       </div>
       {/* Мягкая волна вместо прямого края */}
@@ -145,19 +145,19 @@ const jsonLd = [
         </label>
         <button type="submit" class="btn-mint col-span-2 rounded-[14px]! py-4! lg:col-span-1 lg:px-8!">Найти свободные дома</button>
       </form>
-      <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 px-1 text-sm text-muted">
-        <span class="flex items-center gap-2"><Image src={badgeYandex} width={64} alt="" class="h-7 w-auto rounded" />«Хорошее место» Яндекса 5 лет подряд</span>
-        <span class="flex items-center gap-2"><Image src={badgeSplit} width={120} alt="" class="h-6 w-auto rounded-full bg-white px-1.5" />оплата частями</span>
-        <span>с животными можно</span>
+      <div class="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted sm:mt-4 sm:gap-x-6 sm:px-1 sm:text-sm">
+        <span class="flex items-center gap-2 rounded-full bg-card py-1 pr-3 pl-1 sm:bg-transparent sm:p-0"><Image src={badgeYandex} width={64} alt="" class="h-7 w-auto rounded" />«Хорошее место» Яндекса 5 лет подряд</span>
+        <span class="flex items-center gap-2 rounded-full bg-card py-1 pr-3 pl-1 sm:bg-transparent sm:p-0"><Image src={badgeSplit} width={120} alt="" class="h-6 w-auto rounded-full bg-white px-1.5" />оплата частями</span>
+        <span class="rounded-full bg-card px-3 py-1.5 sm:bg-transparent sm:p-0">с животными можно</span>
       </div>
     </div>
 
     {/* Преимущества — строка иконок */}
-    <div class="wrap mt-12 grid grid-cols-2 gap-6 lg:grid-cols-4">
+    <div class="wrap mt-8 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
       {
         pillars.map((p, i) => (
           <a href={link(p.href)} class="group flex gap-4" data-reveal style={`--d:${i}`}>
-            <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-mint-soft text-mint-dark transition group-hover:bg-mint group-hover:text-[#083a2b]" aria-hidden="true" set:html={p.icon} />
+            <span class="grid size-11 shrink-0 place-items-center rounded-2xl bg-mint-soft sm:size-12 text-mint-dark transition group-hover:bg-mint group-hover:text-[#2a1606]" aria-hidden="true" set:html={p.icon} />
             <span>
               <span class="block font-semibold">{p.title}</span>
               <span class="mt-1 block text-sm text-muted">{p.text}</span>
@@ -222,13 +222,13 @@ const jsonLd = [
         </div>
         <a href={link('/special')} class="btn-ghost" data-reveal>Все акции →</a>
       </div>
-      <div class="scroller mt-8 -mx-4 px-4 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0">
+      <div class="scroller mt-8 -mx-4 items-start px-4 sm:mx-0 sm:grid sm:grid-cols-3 sm:items-stretch sm:overflow-visible sm:px-0">
         {
           promos.map((p, i) => (
             <article class="card group flex w-[85%] shrink-0 snap-start flex-col overflow-hidden sm:w-auto" data-reveal style={`--d:${i}`}>
               <div class="relative overflow-hidden">
                 <Picture formats={['avif', 'webp']} src={p.image} alt={p.title} widths={[400, 640]} sizes="(min-width: 640px) 33vw, 85vw" class="aspect-[4/3] w-full object-cover transition duration-[1200ms] group-hover:scale-105" />
-                {p.discount && <span class="absolute top-3 right-3 rounded-full bg-mint px-3 py-1.5 font-display text-lg text-[#083a2b]">{p.discount.value}</span>}
+                {p.discount && <span class="absolute top-3 right-3 rounded-full bg-mint px-3 py-1.5 font-display text-lg text-[#2a1606]">{p.discount.value}</span>}
                 {p.price && <span class="glass absolute top-3 right-3 rounded-full px-3 py-1.5 font-display text-sm">{p.price}</span>}
               </div>
               <div class="flex flex-1 flex-col p-5">
@@ -261,9 +261,9 @@ const jsonLd = [
       </div>
       <a href={link('/doma')} class="btn-dark" data-reveal>Все дома →</a>
     </div>
-    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <div class="sm:col-span-2 lg:row-span-2"><HouseCard house={houses[0]!} size="lg" /></div>
-      {houses.slice(1, 6).map((h, i) => <HouseCard house={h} delay={i + 1} />)}
+    <div class="scroller mt-8 -mx-4 gap-4 px-4 sm:mx-0 sm:mt-10 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
+      <div class="w-[84%] shrink-0 snap-start sm:col-span-2 sm:w-auto lg:row-span-2"><HouseCard house={houses[0]!} size="lg" /></div>
+      {houses.slice(1, 6).map((h, i) => <div class="w-[84%] shrink-0 snap-start sm:w-auto"><HouseCard house={h} delay={i + 1} /></div>)}
     </div>
   </section>
 
@@ -277,7 +277,7 @@ const jsonLd = [
           <p class="eyebrow text-white/60">Подбор дома</p>
           <h2 id="quiz-title" class="h-section mt-3">С кем едете?</h2>
           <p class="mt-4 max-w-sm text-white/75">Четыре коротких шага — и мы покажем, какой домик вам подойдёт. А за прохождение подарим сертификат на отдых.</p>
-          <ul class="mt-8 space-y-4 border-l border-white/20 pl-5">
+          <ul class="mt-8 hidden space-y-4 border-l border-white/20 pl-5 sm:block">
             <li><p class="font-display text-2xl uppercase">4 шага</p><p class="text-sm text-white/60">ответы займут минуту</p></li>
             <li><p class="font-display text-2xl uppercase">22 дома</p><p class="text-sm text-white/60">подберём по составу и бюджету</p></li>
             <li><p class="font-display text-2xl uppercase">Подарок</p><p class="text-sm text-white/60">сертификат на отдых</p></li>
@@ -290,7 +290,7 @@ const jsonLd = [
                 <Picture formats={['avif', 'webp']} src={q.image} alt={q.label} widths={[320, 520]} sizes="(min-width: 1024px) 360px, 46vw" class="aspect-[4/3] w-full object-cover transition duration-[1200ms] group-hover:scale-105" />
                 <span class="flex items-center justify-between gap-2 p-3 font-display text-[0.7rem] uppercase sm:p-4 sm:text-sm">
                   {q.label}
-                  <span class="grid size-8 shrink-0 place-items-center rounded-full bg-mint text-[#083a2b] transition group-hover:translate-x-1">→</span>
+                  <span class="grid size-8 shrink-0 place-items-center rounded-full bg-mint text-[#2a1606] transition group-hover:translate-x-1">→</span>
                 </span>
               </a>
             ))
@@ -316,9 +316,9 @@ const jsonLd = [
       </div>
       {
         experiences.map((e, i) => (
-          <div class="exp-panel mt-6 grid auto-rows-[190px] grid-cols-2 gap-3 sm:auto-rows-[240px] lg:grid-cols-4" data-i={i} hidden={i !== 0}>
+          <div class="exp-panel mt-5 grid auto-rows-[170px] grid-cols-2 gap-2.5 sm:mt-6 sm:gap-3 sm:auto-rows-[240px] lg:grid-cols-4" data-i={i} hidden={i !== 0}>
             {e.items.map((x, j) => (
-              <a href={link(x.href)} class:list={['group relative isolate overflow-hidden rounded-[20px] text-white', j === 0 && 'col-span-2 row-span-2', j > 0 && e.items.length === 3 && 'col-span-2 lg:col-span-2', j === e.items.length - 1 && e.items.length === 4 && 'col-span-2 lg:col-span-2']}>
+              <a href={link(x.href)} class:list={['group relative isolate overflow-hidden rounded-[20px] text-white', j === 0 && 'col-span-2 row-span-2', j > 0 && e.items.length === 3 && 'lg:col-span-2', j === e.items.length - 1 && e.items.length === 4 && 'col-span-2 lg:col-span-2']}>
                 <Picture formats={['avif', 'webp']} src={x.image} alt={x.title} widths={j === 0 ? [480, 800] : [320, 480]} sizes={j === 0 ? '(min-width: 1024px) 50vw, 94vw' : '(min-width: 1024px) 25vw, 46vw'} class="absolute inset-0 -z-20 h-full w-full object-cover transition duration-[1200ms] group-hover:scale-105" />
                 <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
                 <div class="flex h-full flex-col justify-end p-4 sm:p-5">
@@ -336,7 +336,7 @@ const jsonLd = [
   {/* ═══ SPA + VIP ═══ */}
   <section class="wrap pb-16 sm:pb-24" aria-label="SPA и VIP-программы">
     <div class="grid gap-4 lg:grid-cols-2">
-      <article class="group relative isolate flex min-h-[520px] flex-col justify-end overflow-hidden rounded-[var(--radius-xl)] p-5 text-white sm:p-8" data-reveal aria-labelledby="spa-title">
+      <article class="group relative isolate flex min-h-[460px] flex-col justify-end sm:min-h-[520px] overflow-hidden rounded-[var(--radius-xl)] p-5 text-white sm:p-8" data-reveal aria-labelledby="spa-title">
         <Picture formats={['avif', 'webp']} src={spaPool} alt="Подогреваемый бассейн SPA-комплекса" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 50vw, 94vw" class="absolute inset-0 -z-20 h-full w-full object-cover transition duration-[1500ms] group-hover:scale-105" />
         <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 to-transparent" />
         <p class="eyebrow text-white/70">В 300 метрах от домов</p>
@@ -394,8 +394,9 @@ const jsonLd = [
       </div>
       <a href={link('/kartabr')} class="btn-ghost" data-reveal>Интерактивная карта →</a>
     </div>
-    <div class="card mt-8 overflow-x-auto p-3 sm:p-5" data-reveal>
-      <Picture formats={['avif', 'webp']} src={mapImg} alt="Карта территории базы отдыха Берёзовая роща: дома, пруды для рыбалки, SPA-комплекс, ресторан, контактная ферма" widths={[800, 1200, 1600]} sizes="(min-width: 1240px) 1180px, 100vw" class="w-full min-w-[680px]" />
+    <p class="mt-4 text-sm text-muted sm:hidden">Листайте карту в сторону →</p>
+    <div class="card mt-3 overflow-x-auto p-2 sm:mt-8 sm:p-5" data-reveal>
+      <Picture formats={['avif', 'webp']} src={mapImg} alt="Карта территории базы отдыха Берёзовая роща: дома, пруды для рыбалки, SPA-комплекс, ресторан, контактная ферма" widths={[800, 1200, 1600]} sizes="(min-width: 1240px) 1180px, 100vw" class="w-full min-w-[600px] sm:min-w-[680px]" />
     </div>
   </section>
 

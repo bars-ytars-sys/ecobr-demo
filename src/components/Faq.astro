@@ -8,9 +8,9 @@ const columns = [faq.slice(0, half), faq.slice(half)];
 
 <section id="faq" class="py-16 sm:py-24" aria-labelledby="faq-title" data-reveal>
   <div class="wrap">
-    <p class="eyebrow text-center">Перед поездкой</p>
-    <h2 id="faq-title" class="h-section mx-auto mt-3 max-w-3xl text-center">Часто задаваемые вопросы</h2>
-    <div class="mt-10 grid gap-x-12 md:grid-cols-2">
+    <p class="eyebrow sm:flex sm:justify-center">Перед поездкой</p>
+    <h2 id="faq-title" class="h-section mt-3 max-w-3xl sm:mx-auto sm:text-center">Часто задаваемые вопросы</h2>
+    <div class="mt-6 grid gap-x-12 sm:mt-10 md:grid-cols-2">
       {
         columns.map((col) => (
           <div>
