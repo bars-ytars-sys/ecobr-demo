@@ -4,14 +4,14 @@ import { link, site } from '../data/site';
 ---
 
 <Base title="Страница не найдена | Берёзовая роща" description="Такой страницы нет, но в Берёзовой роще есть 22 дизайнерских дома, SPA и банные чаны. Выберите дом или позвоните в отдел бронирования.">
-  <section class="wrap py-20 text-center sm:py-28">
+  <section class="wrap pt-28 pb-20 text-center sm:pt-36">
     <div class="card mx-auto max-w-3xl px-6 py-14">
       <p class="font-display text-7xl text-mint">404</p>
       <h1 class="h-section mt-4">Такой страницы нет</h1>
       <p class="mx-auto mt-4 max-w-lg text-muted">В демо собраны главная, каталог и 12 домов. Остальные разделы переносятся с теми же адресами, что на текущем сайте.</p>
       <div class="mt-8 flex flex-wrap justify-center gap-3">
         <a href={link('/doma')} class="btn-mint">Каталог домов</a>
-        <a href={site.phoneHref} class="btn-outline">{site.phone}</a>
+        <a href={site.phoneHref} class="btn-ghost">{site.phone}</a>
       </div>
     </div>
   </section>

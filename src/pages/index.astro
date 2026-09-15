@@ -2,26 +2,43 @@
 import { Image, Picture, getImage } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import Branch from '../components/Branch.astro';
-import Scroller from '../components/Scroller.astro';
+import HouseCard from '../components/HouseCard.astro';
 import Faq from '../components/Faq.astro';
 import LeadForm from '../components/LeadForm.astro';
 import { link, site } from '../data/site';
 import { faq } from '../data/faq';
-import { experiences, features, heroChips, img, news, promos, quiz, spaPrices, types, vip } from '../data/home';
+import { experiences, news, promos, quiz, spaPrices, types, vip } from '../data/home';
 
-import logoWhite from '../assets/v2/brand/brand-01.svg';
-import badgeAward from '../assets/v2/brand/brand-03.svg';
-import badgeSplit from '../assets/v2/brand/brand-04.png';
+import heroPoster from '../assets/houses/aframe-luxe-white/aframe-luxe-white-01.jpg';
+import darkBg from '../assets/houses/barn-1/barn-1-01.jpg';
+import spaPool from '../assets/site/spa-pool.jpg';
+import vipBath from '../assets/site/vip-bath.jpg';
+import vipEvening from '../assets/site/vip-evening.jpg';
+import chanOrange from '../assets/site/chan-orange.jpg';
 import badgeYandex from '../assets/v2/brand/brand-05.png';
-import gift from '../assets/v2/brand/brand-06.svg';
+import badgeSplit from '../assets/v2/brand/brand-04.png';
 import mapImg from '../assets/v2/map/map-01.webp';
 
-const houses = await getCollection('houses');
-const heroImg = img('hero', 3);
-const og = await getImage({ src: heroImg, width: 1200, format: 'jpg' });
-const bookingHref = (h: string) => (h === 'booking' ? site.booking : link(h));
+const houses = (await getCollection('houses')).sort((a, b) => a.data.order - b.data.order);
+const og = await getImage({ src: heroPoster, width: 1200, format: 'jpg' });
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const dateRu = (d: string) => new Date(d).toLocaleDateString('ru-RU');
+
+const pillars = [
+  { n: '01', title: '22 дизайнерских дома', text: 'У каждого своя атмосфера и, как правило, огороженная территория', href: '/doma' },
+  { n: '02', title: 'SPA-комплекс', text: 'Бассейн под открытым небом, хамам, русская и японская бани', href: '/spa' },
+  { n: '03', title: 'Бани и чаны', text: 'Авторские составы, программы парения, чаны с хвоей и цитрусом', href: '/banchan' },
+  { n: '04', title: 'Ресторан и ферма', text: 'Завтраки «шведский стол», обеды и ужины, контактная ферма', href: '/about' },
+];
+const stats = [
+  { v: 22, suffix: '', label: 'дизайнерских дома' },
+  { v: 10, suffix: '', label: 'форматов домов' },
+  { v: 40, suffix: ' мин', label: 'от Москвы' },
+  { v: 5, suffix: ' лет', label: '«Хорошее место» Яндекса' },
+  { v: 300, suffix: ' м', label: 'до SPA и прудов' },
+  { v: 10, suffix: '', label: 'гостей в самом большом доме' },
+];
+const chat = [faq[2]!, faq[6]!, faq[9]!];
 
 const jsonLd = [
   {
@@ -38,51 +55,19 @@ const jsonLd = [
     email: site.email,
     priceRange: 'от 10 000 ₽ за сутки',
     currenciesAccepted: 'RUB',
-    address: {
-      '@type': 'PostalAddress',
-      addressCountry: 'RU',
-      addressRegion: 'Московская область',
-      addressLocality: 'деревня Васюково',
-      streetAddress: 'Солнечногорский район, КДЗ Новое Мишкино 1/5',
-    },
+    address: { '@type': 'PostalAddress', addressCountry: 'RU', addressRegion: 'Московская область', addressLocality: 'деревня Васюково', streetAddress: 'Солнечногорский район, КДЗ Новое Мишкино 1/5' },
     geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lon },
     hasMap: site.yandexMaps,
-    openingHoursSpecification: {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      opens: '09:00',
-      closes: '23:59',
-    },
+    openingHoursSpecification: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '09:00', closes: '23:59' },
     petsAllowed: true,
-    amenityFeature: ['SPA-комплекс', 'Подогреваемый бассейн', 'Банные чаны', 'Баня', 'Ресторан', 'Рыбалка', 'Контактная ферма', 'Детская площадка', 'Бесплатная парковка', 'Wi-Fi'].map((name) => ({
-      '@type': 'LocationFeatureSpecification',
-      name,
-      value: true,
-    })),
+    amenityFeature: ['SPA-комплекс', 'Подогреваемый бассейн', 'Банные чаны', 'Баня', 'Ресторан', 'Рыбалка', 'Контактная ферма', 'Детская площадка', 'Бесплатная парковка', 'Wi-Fi'].map((name) => ({ '@type': 'LocationFeatureSpecification', name, value: true })),
     sameAs: [site.telegram, site.yandexMaps],
     containsPlace: houses.map((h) => ({ '@id': `${site.url}/doma/${h.id}#accommodation` })),
-    makesOffer: promos.map((p) => ({
-      '@type': 'Offer',
-      name: p.title,
-      description: p.text,
-      priceCurrency: 'RUB',
-      validThrough: p.validThrough,
-      url: `${site.url}/special`,
-    })),
+    makesOffer: promos.map((p) => ({ '@type': 'Offer', name: p.title, description: p.text, priceCurrency: 'RUB', validThrough: p.validThrough, url: `${site.url}/special` })),
     potentialAction: { '@type': 'ReserveAction', target: site.booking },
   },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: site.name,
-    url: `${site.url}/`,
-    inLanguage: 'ru-RU',
-  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+  { '@context': 'https://schema.org', '@type': 'WebSite', name: site.name, url: `${site.url}/`, inLanguage: 'ru-RU' },
 ];
 ---
 
@@ -92,144 +77,212 @@ const jsonLd = [
   ogImage={og.src}
   jsonLd={jsonLd}
 >
-  {/* ПЕРВЫЙ ЭКРАН — композиция как на текущем сайте */}
-  <section class="relative isolate overflow-hidden text-white">
-    <Picture
-      formats={['avif', 'webp']}
-      src={heroImg}
-      alt="Барнхаус с костровой зоной в Берёзовой роще"
-      widths={[640, 960, 1280, 1680]}
-      sizes="100vw"
-      loading="eager"
-      fetchpriority="high"
-      class="absolute inset-0 -z-20 h-full w-full object-cover"
-    />
-    <div class="absolute inset-0 -z-10 bg-black/45"></div>
-    <div class="wrap relative flex min-h-[600px] flex-col items-center justify-center py-10 text-center sm:min-h-[720px] sm:py-16">
-      <div class="mb-5 flex items-center gap-2 sm:absolute sm:top-5 sm:right-6 sm:mb-0 sm:flex-col sm:items-end">
-        <div class="flex items-center gap-2">
-          <img src={badgeAward.src} width="56" height="56" alt="" class="h-10 w-auto sm:h-14" />
-          <Image src={badgeYandex} width={112} alt="Хорошее место по версии Яндекса" class="h-10 w-auto rounded-md sm:h-14" />
+  {/* ═══ ПЕРВЫЙ ЭКРАН: живое видео в скруглённой карточке + бронь прямо здесь ═══ */}
+  <section class="inset relative pt-[68px] sm:pt-[84px]">
+    <div class="relative isolate flex min-h-[calc(100svh-80px)] flex-col justify-end overflow-hidden rounded-[var(--radius-xl)] text-white sm:min-h-[calc(100svh-100px)] lg:min-h-[720px]">
+      <Picture
+        formats={['avif', 'webp']}
+        src={heroPoster}
+        alt="А-фрейм среди берёз на закате — база отдыха Берёзовая роща"
+        widths={[640, 960, 1280, 1920, 2400]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="absolute inset-0 -z-30 h-full w-full object-cover"
+      />
+      {/* Видео подгружается после первой отрисовки; не при экономии трафика и не при «уменьшить движение» */}
+      <video
+        class="hero-video absolute inset-0 -z-20 h-full w-full object-cover opacity-0 transition-opacity duration-[1500ms]"
+        muted
+        loop
+        playsinline
+        preload="none"
+        aria-hidden="true"
+        data-desktop={`${base}/video/hero.webm|${base}/video/hero.mp4`}
+        data-mobile={`${base}/video/hero-mobile.mp4`}
+      ></video>
+      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-black/25 to-black/35"></div>
+
+      <div class="relative px-4 pt-20 pb-4 sm:px-10 sm:pb-7 lg:px-14">
+        <div class="grid gap-8 lg:grid-cols-[2.2fr_1fr] lg:items-end">
+          <div>
+            <p class="glass-dark inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold" data-reveal>
+              <span class="dot animate-pulse text-mint"></span> База отдыха · 40 минут от Москвы
+            </p>
+            {/* H1 дословно с текущего сайта — ключевой запрос в начале */}
+            <h1 class="mt-4 max-w-4xl text-[1.9rem] leading-[1.02] sm:text-5xl lg:text-[2.9rem] 2xl:text-[3.9rem]" data-reveal style="--d:1">
+              База отдыха «Берёзовая роща» с&nbsp;питанием и&nbsp;SPA в&nbsp;Подмосковье
+            </h1>
+            <p class="mt-3 max-w-xl text-[0.95rem] text-white/85 sm:text-lg" data-reveal style="--d:2">
+              22 дизайнерских дома среди берёз, SPA-комплекс, бани, банные чаны, ресторан и ферма с животными.
+            </p>
+          </div>
+          <a href={link('/special')} class="group hidden max-w-sm animate-[float_6s_ease-in-out_infinite] rounded-[20px] bg-teal/90 p-5 backdrop-blur lg:block lg:justify-self-end" data-reveal style="--d:3">
+            <p class="eyebrow text-white/70">Тёплая осень</p>
+            <p class="mt-2 font-display text-lg uppercase">Ароматный чан в подарок</p>
+            <p class="mt-1 text-sm text-white/80">По промокоду ОСЕНЬ2026 на заезды в период акции</p>
+            <p class="mt-3 font-display text-sm uppercase">Смотреть акции <span class="inline-block transition group-hover:translate-x-1">→</span></p>
+          </a>
         </div>
-        <Image src={badgeSplit} width={220} alt="Оплата частями через Яндекс Сплит" class="h-8 w-auto rounded-full bg-white px-2 sm:h-9" />
+
+        {/* Бронирование в первом экране — фасад модуля Bnovo (имена параметров сверить на проде) */}
+        <form action={site.booking} method="get" class="glass mt-6 grid grid-cols-2 gap-2 rounded-[22px] p-2 text-ink sm:mt-8 sm:grid-cols-[1fr_1fr_0.7fr_auto]" data-reveal style="--d:3">
+          <label class="rounded-[16px] bg-white/85 px-4 py-2.5">
+            <span class="block text-[0.62rem] font-semibold tracking-wider text-muted uppercase">Заезд</span>
+            <input type="date" name="dfrom" class="w-full bg-transparent text-[0.92rem] font-semibold outline-none" />
+          </label>
+          <label class="rounded-[16px] bg-white/85 px-4 py-2.5">
+            <span class="block text-[0.62rem] font-semibold tracking-wider text-muted uppercase">Выезд</span>
+            <input type="date" name="dto" class="w-full bg-transparent text-[0.92rem] font-semibold outline-none" />
+          </label>
+          <label class="col-span-2 rounded-[16px] bg-white/85 px-4 py-2.5 sm:col-span-1">
+            <span class="block text-[0.62rem] font-semibold tracking-wider text-muted uppercase">Гостей</span>
+            <select name="adults" class="w-full bg-transparent text-[0.92rem] font-semibold outline-none">
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => <option selected={n === 2}>{n}</option>)}
+            </select>
+          </label>
+          <button type="submit" class="btn-mint col-span-2 rounded-[16px]! py-4! sm:col-span-1 sm:px-8!">Найти свободные дома</button>
+        </form>
+        <div class="mt-4 hidden items-center gap-3 text-xs text-white/80 sm:flex">
+          <Image src={badgeYandex} width={80} alt="Хорошее место по версии Яндекса" class="h-9 w-auto rounded-md" />
+          <span>«Хорошее место» по версии Яндекса 5 лет подряд</span>
+          <Image src={badgeSplit} width={160} alt="Яндекс Сплит" class="ml-4 h-8 w-auto rounded-full bg-white px-2" />
+          <span>Оплата частями без переплат</span>
+        </div>
       </div>
-      <img src={logoWhite.src} width="120" height="44" alt="" class="mb-6 h-10 w-auto sm:h-12" />
-      <h1 class="max-w-4xl text-[1.75rem] leading-[1.08] sm:text-5xl">База отдыха «Берёзовая роща» с питанием и SPA в Подмосковье</h1>
-      <p class="mt-5 max-w-xl text-[0.95rem] text-white/90 sm:text-base">
-        Насладитесь полноценным отдыхом в Берёзовой роще: SPA‑комплекс, ферма с животными и ресторан всего в 40 мин от Москвы
-      </p>
-      <div class="mt-7 flex w-full max-w-md flex-col gap-3 sm:w-auto sm:max-w-none sm:flex-row">
-        <a href={site.booking} class="btn-mint">Проверить даты и забронировать</a>
-        <a href={`${link('/')}#quiz`} class="btn bg-white text-ink hover:bg-page">Пройди опрос — получи подарок <img src={gift.src} width="18" height="18" alt="" /></a>
+    </div>
+
+    {/* Пристыкованная панель, как этапы на открытьбазу.рф */}
+    <div class="wrap relative z-10">
+      <div class="card grid rounded-t-none sm:grid-cols-2 lg:grid-cols-4">
+        {
+          pillars.map((p, i) => (
+            <a href={link(p.href)} class="group border-t border-line p-5 transition first:border-t-0 hover:bg-mint-soft sm:p-6 lg:border-t-0 lg:border-l lg:first:border-l-0" data-reveal style={`--d:${i}`}>
+              <p class="font-display text-sm uppercase"><span class="text-mint-dark">{p.n}</span> / {p.title}</p>
+              <p class="mt-2 text-sm text-muted">{p.text}</p>
+            </a>
+          ))
+        }
       </div>
-      <ul class="mt-10 flex flex-wrap justify-center gap-2 text-ink sm:gap-3">
-        {heroChips.map((c) => <li class="chip"><span class="size-2 rounded-full bg-mint" aria-hidden="true" />{c}</li>)}
-      </ul>
     </div>
   </section>
 
-  {/* ТЁПЛАЯ ОСЕНЬ — сезонные предложения */}
-  <section class="pt-14 sm:pt-20" aria-labelledby="promo-title">
-    <div class="wrap">
-      <h2 id="promo-title" class="h-section">Тёплая осень</h2>
-      <p class="mt-4 text-lg">Ради нас берут выходной!</p>
-    </div>
-    <Scroller label="Сезонные предложения" class="mt-8">
+  {/* ═══ МАСШТАБ В ЦИФРАХ ═══ */}
+  <section class="wrap py-16 sm:py-24" aria-labelledby="stats-title">
+    <p class="eyebrow" data-reveal>Берёзовая роща в цифрах</p>
+    <h2 id="stats-title" class="h-section mt-3 max-w-4xl" data-reveal>Большая территория для&nbsp;тихого отдыха</h2>
+    <div class="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-3">
       {
-        promos.map((p) => (
-          <article class="card flex w-[86%] shrink-0 snap-start flex-col overflow-hidden sm:w-[48%] lg:w-[calc((100%-2rem)/3)]">
-            <Picture formats={['avif', 'webp']} src={p.image} alt={p.title} widths={[400, 640]} sizes="(min-width: 1024px) 380px, 86vw" class="aspect-[16/10] w-full object-cover" />
-            <div class="flex flex-1 flex-col p-5 sm:p-6">
-              <h3 class="text-lg sm:text-xl">{p.title}</h3>
-              <p class="mt-3 text-[0.95rem]">{p.text}</p>
-              {p.bullet && <p class="mt-3 flex gap-2 text-sm"><span class="mt-1.5 size-1.5 shrink-0 rounded-full bg-mint" />{p.bullet}</p>}
-              {p.price && (
-                <div class="mt-4 border-l-2 border-mint pl-3">
-                  <p class="text-[0.65rem] tracking-wider text-muted uppercase">Стоимость</p>
-                  <p class="font-display text-2xl">{p.price}</p>
-                </div>
-              )}
-              {p.code && (
-                <button type="button" class="copy-code mt-4 flex w-fit items-center gap-3 rounded-[8px] border border-dashed border-line px-3 py-2 text-sm" data-code={p.code}>
-                  <b class="font-display">{p.code}</b>
-                  <span class="text-xs text-muted">нажмите, чтобы скопировать</span>
-                </button>
-              )}
-              {p.discount && (
-                <div class="mt-4">
-                  <div class="w-fit rounded-[8px] bg-page px-3 py-2">
-                    <p class="text-[0.65rem] tracking-wider text-muted uppercase">{p.discount.label}</p>
-                    <p class="font-display text-2xl">{p.discount.value}</p>
-                  </div>
-                  <p class="mt-3 flex gap-2 text-sm"><span class="mt-1.5 size-1.5 shrink-0 rounded-full bg-mint" />{p.discount.note}</p>
-                </div>
-              )}
-              <div class="mt-auto pt-5">
-                <a href={bookingHref(p.cta.href)} class="btn-outline">{p.cta.label}</a>
-                {p.foot.map((t) => <p class="mt-2 text-xs text-muted">{t}</p>)}
+        stats.map((s, i) => (
+          <div class="rounded-[22px] bg-gradient-to-br from-white to-[#dfe9e5] p-5 [clip-path:polygon(0_0,100%_0,100%_74%,90%_100%,0_100%)] sm:p-7" data-reveal style={`--d:${i}`}>
+            <p class="font-display text-[2.4rem] leading-none text-teal sm:text-6xl">
+              <span data-count={s.v}>{s.v}</span>{s.suffix}
+            </p>
+            <p class="mt-2 text-[0.8rem] font-semibold uppercase sm:text-base">{s.label}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* Бегущая строка форматов домов — ссылки на карточки */}
+  <div class="relative overflow-hidden pb-8 [mask-image:linear-gradient(90deg,transparent,black_6%,black_94%,transparent)]" aria-label="Форматы домов">
+    <ul class="flex w-max animate-[marquee_45s_linear_infinite] gap-3 hover:[animation-play-state:paused]">
+      {
+        [...types, ...types].map((t, i) => (
+          <li aria-hidden={i >= types.length ? 'true' : undefined}>
+            <a href={link(t.slug ? `/doma/${t.slug}` : '/doma')} tabindex={i >= types.length ? -1 : undefined} class="flex items-center gap-3 rounded-full bg-white py-2 pr-6 pl-2 font-display text-sm whitespace-nowrap uppercase shadow-sm hover:bg-mint-soft">
+              <Picture formats={['avif', 'webp']} src={t.image} alt="" widths={[96]} sizes="44px" class="size-11 rounded-full object-cover" />
+              {t.name}
+              <span class="font-sans text-xs text-muted normal-case">до {t.guests} гостей</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  {/* ═══ ТЁПЛАЯ ОСЕНЬ ═══ */}
+  <section class="py-12 sm:py-20" aria-labelledby="promo-title">
+    <div class="wrap">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="eyebrow" data-reveal>Специальные предложения</p>
+          <h2 id="promo-title" class="h-section mt-3" data-reveal>Тёплая осень</h2>
+          <p class="mt-3 text-lg" data-reveal>Ради нас берут выходной!</p>
+        </div>
+        <a href={link('/special')} class="btn-ghost" data-reveal>Все акции →</a>
+      </div>
+      <div class="scroller mt-8 -mx-4 px-4 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0">
+        {
+          promos.map((p, i) => (
+            <article class="card group flex w-[85%] shrink-0 snap-start flex-col overflow-hidden sm:w-auto" data-reveal style={`--d:${i}`}>
+              <div class="relative overflow-hidden">
+                <Picture formats={['avif', 'webp']} src={p.image} alt={p.title} widths={[400, 640]} sizes="(min-width: 640px) 33vw, 85vw" class="aspect-[4/3] w-full object-cover transition duration-[1200ms] group-hover:scale-105" />
+                {p.discount && <span class="absolute top-3 right-3 rounded-full bg-mint px-3 py-1.5 font-display text-lg text-[#083a2b]">{p.discount.value}</span>}
+                {p.price && <span class="glass absolute top-3 right-3 rounded-full px-3 py-1.5 font-display text-sm">{p.price}</span>}
               </div>
-            </div>
-          </article>
-        ))
-      }
-    </Scroller>
-  </section>
-
-  {/* ПРЕИМУЩЕСТВА */}
-  <section class="pt-8" aria-label="Почему выбирают Берёзовую рощу">
-    <Scroller label="Преимущества базы">
-      {
-        features.map((f) => (
-          <article class="card flex w-[72%] shrink-0 snap-start flex-col overflow-hidden sm:w-[40%] lg:w-[calc((100%-4rem)/5)]">
-            <Picture formats={['avif', 'webp']} src={f.image} alt={f.title} widths={[300, 480]} sizes="(min-width: 1024px) 230px, 72vw" class="aspect-[3/2] w-full object-cover" />
-            <div class="flex flex-1 flex-col p-4">
-              <h3 class="text-[0.95rem]">{f.title}</h3>
-              <p class="mt-2 text-sm text-muted">{f.text}</p>
-              <a href={link(f.href)} class="btn-outline mt-auto w-full px-3! py-3! text-[0.68rem]!">{f.cta}</a>
-            </div>
-          </article>
-        ))
-      }
-    </Scroller>
-  </section>
-
-  {/* ОНЛАЙН-БРОНИРОВАНИЕ — фасад виджета Bnovo: тяжёлый скрипт модуля грузится только после действия. Имена параметров сверить с Bnovo на проде */}
-  <section class="py-14 sm:py-20" aria-labelledby="booking-title">
-    <div class="wrap">
-      <h2 id="booking-title" class="h-section text-center">Онлайн бронирование</h2>
-      <form action={site.booking} method="get" class="card mt-8 grid gap-3 p-5 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end sm:p-6">
-        <p class="text-center font-semibold sm:col-span-4">Забронировать онлайн</p>
-        <label class="grid gap-1 text-xs text-muted">Заезд<input type="date" name="dfrom" class="rounded-[8px] border border-line px-3 py-3 text-base text-ink" /></label>
-        <label class="grid gap-1 text-xs text-muted">Выезд<input type="date" name="dto" class="rounded-[8px] border border-line px-3 py-3 text-base text-ink" /></label>
-        <label class="grid gap-1 text-xs text-muted">Количество гостей
-          <select name="adults" class="rounded-[8px] border border-line bg-white px-3 py-3 text-base text-ink">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => <option selected={n === 2}>{n}</option>)}
-          </select>
-        </label>
-        <button type="submit" class="btn-mint py-4!">Показать наличие</button>
-      </form>
+              <div class="flex flex-1 flex-col p-5">
+                <h3 class="text-lg">{p.title}</h3>
+                <p class="mt-2 text-sm text-muted">{p.text}</p>
+                {p.discount && <p class="mt-2 text-sm text-muted">{p.discount.note}</p>}
+                {p.code && (
+                  <button type="button" class="copy-code mt-3 flex w-fit items-center gap-3 rounded-full border border-dashed border-mint-dark/40 px-4 py-2 text-sm" data-code={p.code}>
+                    <b class="font-display">{p.code}</b>
+                    <span class="text-xs text-muted">скопировать</span>
+                  </button>
+                )}
+                <a href={p.cta.href === 'booking' ? site.booking : link(p.cta.href)} class="mt-auto pt-5 font-display text-sm text-mint-dark uppercase">{p.cta.label} →</a>
+                <p class="mt-2 text-xs text-muted">{p.foot.at(-1)}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
     </div>
   </section>
 
-  {/* ВЫБЕРИТЕ СВОЙ ФОРМАТ УЮТА + ПОДБОР ДОМА */}
-  <section id="quiz" class="pb-10" aria-labelledby="format-title">
-    <div class="wrap">
-      <div class="grid gap-4 md:grid-cols-[1.4fr_1fr] md:items-end">
-        <h2 id="format-title" class="h-section">Выберите свой <br />формат уюта</h2>
-        <p class="max-w-xs text-muted md:justify-self-end">Каждый домик — это баланс природы, света и персонального пространства</p>
+  {/* ═══ ДОМА ═══ */}
+  <section id="doma" class="wrap py-12 sm:py-20" aria-labelledby="houses-title">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow" data-reveal>Каталог домов</p>
+        <h2 id="houses-title" class="h-section mt-3 max-w-3xl" data-reveal>Дома, которые придумали дизайнеры</h2>
+        <p class="mt-3 max-w-xl text-muted" data-reveal>От зеркального Бауса для двоих до флагманской Панорамы на десять гостей — у каждого дома свой характер.</p>
       </div>
-      <Branch class="mt-8" />
-      <div class="card mt-6 p-5 sm:p-8">
-        <h3 class="text-xl sm:text-2xl">Подберём дом под ваш отдых</h3>
-        <p class="mt-2 max-w-lg text-sm text-muted">Четыре коротких шага — и мы покажем, какой домик вам подойдёт. А за прохождение подарим сертификат на отдых.</p>
-        <p class="mt-5 border-t border-line pt-3 text-xs text-muted">Шаг 1 из 4</p>
-        <p class="mt-2 font-display text-sm uppercase">С кем едете?</p>
-        <div class="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <a href={link('/doma')} class="btn-dark" data-reveal>Все дома →</a>
+    </div>
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="sm:col-span-2 lg:row-span-2"><HouseCard house={houses[0]!} size="lg" /></div>
+      {houses.slice(1, 6).map((h, i) => <HouseCard house={h} delay={i + 1} />)}
+    </div>
+  </section>
+
+  {/* ═══ ТЁМНАЯ ФОТО-СЕКЦИЯ: ПОДБОР ДОМА ═══ */}
+  <section id="quiz" class="inset relative isolate overflow-hidden rounded-[var(--radius-xl)] text-white" aria-labelledby="quiz-title">
+    <Picture formats={['avif', 'webp']} src={darkBg} alt="" widths={[800, 1280, 1920]} sizes="100vw" class="parallax-img absolute inset-0 -z-20 h-full w-full object-cover" />
+    <div class="absolute inset-0 -z-10 bg-night/80"></div>
+    <div class="wrap py-16 sm:py-24">
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.6fr]">
+        <div data-reveal>
+          <p class="eyebrow text-white/60">Подбор дома</p>
+          <h2 id="quiz-title" class="h-section mt-3">С кем едете?</h2>
+          <p class="mt-4 max-w-sm text-white/75">Четыре коротких шага — и мы покажем, какой домик вам подойдёт. А за прохождение подарим сертификат на отдых.</p>
+          <ul class="mt-8 space-y-4 border-l border-white/20 pl-5">
+            <li><p class="font-display text-2xl uppercase">4 шага</p><p class="text-sm text-white/60">ответы займут минуту</p></li>
+            <li><p class="font-display text-2xl uppercase">22 дома</p><p class="text-sm text-white/60">подберём по составу и бюджету</p></li>
+            <li><p class="font-display text-2xl uppercase">Подарок</p><p class="text-sm text-white/60">сертификат на отдых</p></li>
+          </ul>
+        </div>
+        <div class="grid grid-cols-2 gap-3 sm:gap-4">
           {
-            quiz.map((q) => (
-              <a href={`${link('/doma')}#${q.group}`} class="group relative block overflow-hidden rounded-[14px]">
-                <Picture formats={['avif', 'webp']} src={q.image} alt={q.label} widths={[300, 500]} sizes="(min-width: 1024px) 270px, 45vw" class="aspect-[4/5] w-full object-cover transition duration-500 group-hover:scale-105" />
-                <span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 pt-10 text-sm font-semibold text-white">{q.label}</span>
+            quiz.map((q, i) => (
+              <a href={`${link('/doma')}#${q.group}`} class="group relative block overflow-hidden rounded-[20px] bg-white text-ink" data-reveal style={`--d:${i}`}>
+                <Picture formats={['avif', 'webp']} src={q.image} alt={q.label} widths={[320, 520]} sizes="(min-width: 1024px) 360px, 46vw" class="aspect-[4/3] w-full object-cover transition duration-[1200ms] group-hover:scale-105" />
+                <span class="flex items-center justify-between gap-2 p-3 font-display text-[0.7rem] uppercase sm:p-4 sm:text-sm">
+                  {q.label}
+                  <span class="grid size-8 shrink-0 place-items-center rounded-full bg-mint text-[#083a2b] transition group-hover:translate-x-1">→</span>
+                </span>
               </a>
             ))
           }
@@ -238,142 +291,125 @@ const jsonLd = [
     </div>
   </section>
 
-  {/* ТИПЫ ДОМОВ — переключатель как на сайте; все описания в HTML и со ссылками на карточки домов */}
-  <section class="wrap py-6" aria-label="Типы домов">
-    <div class="types card relative overflow-hidden p-5 sm:p-8">
-      <div class="pointer-events-none absolute -right-20 bottom-0 size-96 rounded-full bg-mint/25 blur-3xl"></div>
-      <div class="relative grid gap-8 lg:grid-cols-[1.25fr_1fr]">
-        <div>
-          {
-            types.map((t, i) => (
-              <div class="type-panel" data-i={i} hidden={i !== 0}>
-                <h3 class="flex flex-wrap items-center gap-3 text-3xl sm:text-4xl">
-                  {t.name}
-                  <span class="mark font-sans text-xs font-semibold normal-case">до {t.guests} гостей</span>
-                </h3>
-                <p class="mt-3 max-w-md text-[0.95rem]">{t.text}</p>
-                <Picture formats={['avif', 'webp']} src={t.image} alt={`Дом «${t.name}» в Берёзовой роще`} widths={[480, 720, 960]} sizes="(min-width: 1024px) 560px, 90vw" class="mt-5 aspect-[16/10] w-full rounded-[14px] object-cover" loading={i === 0 ? 'lazy' : 'lazy'} />
-                <a href={link(t.slug ? `/doma/${t.slug}` : '/doma')} class="btn-outline mt-5">{t.slug ? `Смотреть дом «${t.name}»` : 'Смотреть в каталоге'}</a>
-              </div>
-            ))
-          }
-        </div>
-        <div class="flex flex-col">
-          <div class="grid grid-cols-2 gap-x-6 gap-y-3" role="tablist" aria-label="Выбор типа дома">
-            {
-              types.map((t, i) => (
-                  <button type="button" role="tab" data-i={i} aria-selected={i === 0 ? 'true' : 'false'} class="type-tab flex items-center gap-2 text-left font-display text-[0.8rem] uppercase text-muted transition aria-selected:text-ink sm:text-sm">
-                    <span class="grid size-4 place-items-center rounded-[4px] bg-line text-[0.5rem] text-white transition" aria-hidden="true">▶</span>
-                    {t.name}
-                  </button>
-              ))
-            }
-          </div>
-          <p class="mt-auto pt-8 text-sm text-muted">Каждый домик создан с заботой о гостях — уникальный дизайн и атмосфера, в которую хочется возвращаться</p>
-          <a href={link('/doma')} class="btn-outline mt-5 w-fit">Посмотреть все дома</a>
-        </div>
+  {/* ═══ ВПЕЧАТЛЕНИЯ: большой бенто ═══ */}
+  <section class="wrap py-16 sm:py-24" aria-labelledby="exp-title">
+    <p class="eyebrow" data-reveal>Чем заняться</p>
+    <h2 id="exp-title" class="h-section mt-3" data-reveal>Наполните отдых впечатлениями</h2>
+    <div class="mt-8">
+      <div class="flex gap-2 overflow-x-auto [scrollbar-width:none]" role="tablist" aria-label="Виды отдыха">
+        {
+          experiences.map((e, i) => (
+            <button type="button" role="tab" data-i={i} aria-selected={i === 0 ? 'true' : 'false'} class="exp-tab shrink-0 rounded-full bg-white px-5 py-3 font-display text-xs uppercase shadow-sm transition aria-selected:bg-night aria-selected:text-white">
+              {e.tab}
+            </button>
+          ))
+        }
       </div>
+      {
+        experiences.map((e, i) => (
+          <div class="exp-panel mt-6 grid auto-rows-[190px] grid-cols-2 gap-3 sm:auto-rows-[240px] lg:grid-cols-4" data-i={i} hidden={i !== 0}>
+            {e.items.map((x, j) => (
+              <a href={link(x.href)} class:list={['group relative isolate overflow-hidden rounded-[20px] text-white', j === 0 && 'col-span-2 row-span-2', j > 0 && e.items.length === 3 && 'col-span-2 lg:col-span-2', j === e.items.length - 1 && e.items.length === 4 && 'col-span-2 lg:col-span-2']}>
+                <Picture formats={['avif', 'webp']} src={x.image} alt={x.title} widths={j === 0 ? [480, 800] : [320, 480]} sizes={j === 0 ? '(min-width: 1024px) 50vw, 94vw' : '(min-width: 1024px) 25vw, 46vw'} class="absolute inset-0 -z-20 h-full w-full object-cover transition duration-[1200ms] group-hover:scale-105" />
+                <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                <div class="flex h-full flex-col justify-end p-4 sm:p-5">
+                  <h3 class:list={[j === 0 ? 'text-2xl sm:text-3xl' : 'text-sm sm:text-base']}>{x.title}</h3>
+                  {j === 0 && <p class="mt-2 max-w-md text-sm text-white/80">{x.text}</p>}
+                </div>
+              </a>
+            ))}
+          </div>
+        ))
+      }
     </div>
   </section>
 
-  {/* НАПОЛНИТЕ ОТДЫХ ВПЕЧАТЛЕНИЯМИ */}
-  <section class="py-14 sm:py-20" aria-labelledby="exp-title">
-    <div class="wrap">
-      <h2 id="exp-title" class="h-section text-center">Наполните отдых <br />впечатлениями</h2>
-      <Branch class="mt-6" />
-      <div class="exp mt-8">
-        <div class="grid grid-cols-3 border-b border-line text-center" role="tablist" aria-label="Виды отдыха">
-          {
-            experiences.map((e, i) => (
-              <button type="button" role="tab" data-i={i} aria-selected={i === 0 ? 'true' : 'false'} class="exp-tab -mb-px border-b-2 border-transparent py-4 font-display text-[0.7rem] uppercase text-muted aria-selected:border-mint aria-selected:text-mint-dark sm:text-sm">
-                {e.tab}
-              </button>
-            ))
-          }
+  {/* ═══ SPA + VIP ═══ */}
+  <section class="wrap pb-16 sm:pb-24" aria-label="SPA и VIP-программы">
+    <div class="grid gap-4 lg:grid-cols-2">
+      <article class="group relative isolate flex min-h-[520px] flex-col justify-end overflow-hidden rounded-[var(--radius-xl)] p-5 text-white sm:p-8" data-reveal aria-labelledby="spa-title">
+        <Picture formats={['avif', 'webp']} src={spaPool} alt="Подогреваемый бассейн SPA-комплекса" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 50vw, 94vw" class="absolute inset-0 -z-20 h-full w-full object-cover transition duration-[1500ms] group-hover:scale-105" />
+        <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 to-transparent" />
+        <p class="eyebrow text-white/70">В 300 метрах от домов</p>
+        <h2 id="spa-title" class="mt-2 text-4xl sm:text-5xl">SPA-комплекс</h2>
+        <div class="glass-dark mt-5 grid grid-cols-2 gap-3 rounded-[18px] p-4 sm:grid-cols-4">
+          {spaPrices.map(([k, v]) => <div><p class="text-xs text-white/60">{k}</p><p class="font-display text-sm">{v.replace(' от указанной стоимости', '')}</p></div>)}
         </div>
+        <a href={link('/spa')} class="btn-mint mt-5 w-fit">Подробнее про SPA</a>
+      </article>
+      <div class="grid gap-4">
         {
-          experiences.map((e, i) => (
-            <div class="exp-panel mt-6" data-i={i} hidden={i !== 0}>
-              <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {e.items.map((x) => (
-                  <article class="card flex min-h-[210px] gap-4 p-3 sm:p-4">
-                    <Picture formats={['avif', 'webp']} src={x.image} alt={x.title} widths={[240, 360]} sizes="140px" class="aspect-[3/4] h-full w-full rounded-[12px] object-cover" pictureAttributes={{ class: "block w-[42%] shrink-0" }} />
-                    <div class="flex flex-col">
-                      <h3 class="text-[0.95rem] text-mint-dark">{x.title}</h3>
-                      <p class="mt-2 text-sm text-muted">{x.text}</p>
-                      <a href={link(x.href)} class="btn-mint mt-auto w-fit px-4! py-2.5! text-[0.65rem]!">Узнать подробнее</a>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
+          vip.map((v, i) => (
+            <a href={link(v.href)} class="group relative isolate flex min-h-[250px] flex-col justify-end overflow-hidden rounded-[var(--radius-xl)] p-5 text-white sm:p-7" data-reveal style={`--d:${i + 1}`}>
+              <Picture formats={['avif', 'webp']} src={i === 0 ? vipEvening : vipBath} alt={v.title} widths={[640, 960]} sizes="(min-width: 1024px) 50vw, 94vw" class="absolute inset-0 -z-20 h-full w-full object-cover transition duration-[1500ms] group-hover:scale-105" />
+              <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+              <p class="eyebrow text-white/70">VIP-программа</p>
+              <h3 class="mt-1 text-2xl sm:text-3xl">{v.title}</h3>
+              <p class="mt-2 max-w-md text-sm text-white/80">{v.text}</p>
+            </a>
           ))
         }
       </div>
     </div>
   </section>
 
-  {/* VIP-ПРОГРАММЫ */}
-  <section class="wrap pb-14 sm:pb-20" aria-labelledby="vip-title">
-    <div class="grid gap-6 lg:grid-cols-[1.3fr_1fr] lg:items-center">
-      <div>
-        <h2 id="vip-title" class="h-section">Предложения <br />для лучшего отдыха</h2>
-        <p class="mt-4 max-w-md text-muted">Мы создали VIP-форматы отдыха для тех, кто хочет максимум комфорта, приватности и впечатлений</p>
-        <div class="mt-8 space-y-4">
-          {
-            vip.map((v, i) => (
-              <article class="card flex flex-col gap-4 p-5 sm:flex-row sm:items-center">
-                <span class="grid size-12 shrink-0 place-items-center rounded-full bg-mint-soft text-mint-dark" aria-hidden="true">
-                  {i === 0 ? '♥' : '✦'}
-                </span>
-                <div class="flex-1">
-                  <h3 class="text-base">{v.title}</h3>
-                  <p class="mt-1 text-sm text-muted">{v.text}</p>
-                </div>
-                <a href={link(v.href)} class="btn-outline shrink-0">Подробнее</a>
-              </article>
-            ))
-          }
+  {/* ═══ ДИАЛОГ: ответы в формате переписки (реальные ответы из FAQ) ═══ */}
+  <section class="wrap pb-16 sm:pb-24" aria-labelledby="chat-title">
+    <div class="relative isolate grid gap-10 overflow-hidden rounded-[var(--radius-xl)] bg-night p-6 text-white sm:p-10 lg:grid-cols-2 lg:items-center">
+      <Picture formats={['avif', 'webp']} src={chanOrange} alt="" widths={[800, 1200]} sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover opacity-20" />
+      <div data-reveal>
+        <p class="eyebrow text-white/60">С чего начать разговор</p>
+        <h2 id="chat-title" class="h-section mt-3">Спросите — отдел бронирования ответит</h2>
+        <p class="mt-4 max-w-md text-white/75">Напишите, с кем и когда хотите приехать, — подберём дом и расскажем, что включено в стоимость.</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={site.telegram} target="_blank" rel="noopener" class="btn bg-white text-ink hover:bg-mint">Написать в Telegram</a>
+          <a href={site.phoneHref} class="btn-ghost">{site.phone}</a>
         </div>
       </div>
-      <Picture formats={['avif', 'webp']} src={img('vip', 1)} alt="Ванна у панорамного окна — VIP-программа" widths={[480, 720]} sizes="(min-width: 1024px) 460px, 90vw" class="aspect-[4/5] w-full rounded-[var(--radius-card)] object-cover" />
-    </div>
-  </section>
-
-  {/* SPA-КОМПЛЕКС */}
-  <section class="wrap pb-14 sm:pb-20" aria-labelledby="spa-title">
-    <div class="card relative grid gap-8 overflow-hidden p-5 sm:p-8 lg:grid-cols-[1.2fr_1fr] lg:items-center">
-      <div class="pointer-events-none absolute -right-24 -bottom-24 size-96 rounded-full bg-mint/25 blur-3xl"></div>
-      <Scroller label="Фото SPA-комплекса" class="-mx-5 sm:-mx-8 lg:mx-0">
-        {[1, 2, 3, 4, 5].map((n) => (
-          <Picture formats={['avif', 'webp']} src={img('spa', n)} alt={`SPA-комплекс Берёзовой рощи, фото ${n}`} widths={[480, 720]} sizes="(min-width: 1024px) 560px, 88vw" class="aspect-[3/2] w-full rounded-[14px] object-cover" pictureAttributes={{ class: "block w-[88%] shrink-0 snap-center lg:w-full" }} />
-        ))}
-      </Scroller>
-      <div class="relative">
-        <h2 id="spa-title" class="h-section">SPA-комплекс</h2>
-        <p class="mt-6 font-display text-sm uppercase">Стоимость:</p>
-        <dl class="mt-3 space-y-1.5">
-          {spaPrices.map(([k, v]) => <div class="flex gap-2"><dt>{k} —</dt><dd class="font-semibold">{v}</dd></div>)}
-        </dl>
-        <p class="mt-3 text-sm text-muted">Бассейн с подогревом под открытым небом, хамам, русская и японская бани. Вс–чт 10:00–22:00, пт–сб 10:00–23:00.</p>
-        <a href={link('/spa')} class="btn-outline mt-6">Узнать подробнее</a>
+      <div class="space-y-3">
+        {
+          chat.flatMap((c, i) => [
+            <div class="glass-dark ml-auto max-w-[85%] rounded-[18px] rounded-br-sm p-4 text-sm" data-reveal style={`--d:${i * 2}`}>
+              <p class="text-[0.65rem] text-white/50 uppercase">Гость</p>
+              {c.q}
+            </div>,
+            <div class="max-w-[90%] rounded-[18px] rounded-bl-sm bg-white p-4 text-sm text-ink" data-reveal style={`--d:${i * 2 + 1}`}>
+              <p class="text-[0.65rem] text-mint-dark uppercase">Берёзовая роща</p>
+              {c.a.split('\n')[0]}
+            </div>,
+          ])
+        }
       </div>
     </div>
-    <Branch class="mt-10" />
   </section>
 
-  {/* НОВОСТИ */}
-  <section class="wrap pb-14 sm:pb-20" aria-labelledby="news-title">
-    <h2 id="news-title" class="h-section text-center">Наши новости</h2>
-    <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+  {/* ═══ КАРТА ═══ */}
+  <section class="wrap pb-16 sm:pb-24" aria-labelledby="map-title">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow" data-reveal>Территория</p>
+        <h2 id="map-title" class="h-section mt-3" data-reveal>Карта Берёзовой рощи</h2>
+      </div>
+      <a href={link('/kartabr')} class="btn-ghost" data-reveal>Интерактивная карта →</a>
+    </div>
+    <div class="card mt-8 overflow-x-auto p-3 sm:p-5" data-reveal>
+      <Picture formats={['avif', 'webp']} src={mapImg} alt="Карта территории базы отдыха Берёзовая роща: дома, пруды для рыбалки, SPA-комплекс, ресторан, контактная ферма" widths={[800, 1200, 1600]} sizes="(min-width: 1240px) 1180px, 100vw" class="w-full min-w-[680px]" />
+    </div>
+  </section>
+
+  {/* ═══ НОВОСТИ ═══ */}
+  <section class="wrap pb-6" aria-labelledby="news-title">
+    <p class="eyebrow" data-reveal>Что нового</p>
+    <h2 id="news-title" class="h-section mt-3" data-reveal>Новости базы</h2>
+    <div class="scroller mt-8 -mx-4 px-4 sm:mx-0 sm:grid sm:grid-cols-3 sm:px-0">
       {
-        news.map((n) => (
-          <article class="card overflow-hidden">
-            <Picture formats={['avif', 'webp']} src={n.image} alt={n.title} widths={[360, 540]} sizes="(min-width: 1024px) 380px, 90vw" class="aspect-[4/3] w-full object-cover" />
+        news.map((n, i) => (
+          <article class="card w-[80%] shrink-0 snap-start overflow-hidden sm:w-auto" data-reveal style={`--d:${i}`}>
+            <Picture formats={['avif', 'webp']} src={n.image} alt={n.title} widths={[360, 540]} sizes="(min-width: 640px) 33vw, 80vw" class="aspect-[16/10] w-full object-cover" />
             <div class="p-5">
-              <h3 class="text-[0.95rem] text-mint-dark">{n.title}</h3>
+              <time datetime={n.date} class="text-xs font-semibold text-muted">{dateRu(n.date)}</time>
+              <h3 class="mt-2 text-[0.95rem]">{n.title}</h3>
               <p class="mt-2 text-sm text-muted">{n.text}</p>
-              <time datetime={n.date} class="mt-3 block font-display text-xs">{dateRu(n.date)}</time>
             </div>
           </article>
         ))
@@ -381,46 +417,47 @@ const jsonLd = [
     </div>
   </section>
 
-  {/* КАРТА ТЕРРИТОРИИ */}
-  <section class="wrap pb-6" aria-labelledby="map-title">
-    <div class="flex flex-wrap items-end justify-between gap-3">
-      <h2 id="map-title" class="h-section">Карта Берёзовой рощи</h2>
-      <p class="text-sm text-muted">База отдыха с большой территорией: пруды, SPA, ресторан и 22 дома</p>
-    </div>
-    <div class="mt-6 overflow-x-auto rounded-[28px]">
-      <Picture formats={['avif', 'webp']} src={mapImg} alt="Карта территории базы отдыха Берёзовая роща: дома, пруды, SPA-комплекс, ресторан, ферма" widths={[800, 1200, 1600]} sizes="(min-width: 1200px) 1150px, 100vw" class="w-full min-w-[640px]" />
-    </div>
-    <a href={link('/kartabr')} class="btn-outline mt-5">Открыть интерактивную карту</a>
-  </section>
-
   <Faq />
   <LeadForm />
 </Base>
 
 <script>
-  // Переключатели «типы домов» и «впечатления»: все панели уже в HTML, JS только показывает нужную
-  const tabs = (tabSel: string, panelSel: string) => {
-    const buttons = document.querySelectorAll<HTMLButtonElement>(tabSel);
-    buttons.forEach((b) =>
+  const init = () => {
+    // Видео первого экрана: только если можно (не экономия трафика, не «уменьшить движение»)
+    const v = document.querySelector<HTMLVideoElement>('.hero-video');
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    if (v && !v.dataset['started'] && !conn?.saveData && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      v.dataset['started'] = '1';
+      const mobile = matchMedia('(max-width: 640px)').matches;
+      const sources = (mobile ? v.dataset['mobile'] : v.dataset['desktop'])?.split('|') ?? [];
+      const start = () => {
+        sources.forEach((src) => {
+          const s = document.createElement('source');
+          s.src = src;
+          s.type = src.endsWith('.webm') ? 'video/webm' : 'video/mp4';
+          v.append(s);
+        });
+        v.load();
+        v.addEventListener('playing', () => v.classList.remove('opacity-0'), { once: true });
+        v.play().catch(() => {});
+      };
+      if (document.readyState === 'complete') setTimeout(start, 600);
+      else addEventListener('load', () => setTimeout(start, 600), { once: true });
+    }
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.exp-tab');
+    tabs.forEach((b) =>
       b.addEventListener('click', () => {
-        buttons.forEach((x) => x.setAttribute('aria-selected', String(x === b)));
-        document.querySelectorAll<HTMLElement>(panelSel).forEach((p) => (p.hidden = p.dataset['i'] !== b.dataset['i']));
+        tabs.forEach((x) => x.setAttribute('aria-selected', String(x === b)));
+        document.querySelectorAll<HTMLElement>('.exp-panel').forEach((p) => (p.hidden = p.dataset['i'] !== b.dataset['i']));
+      }),
+    );
+    document.querySelectorAll<HTMLButtonElement>('.copy-code').forEach((b) =>
+      b.addEventListener('click', async () => {
+        await navigator.clipboard?.writeText(b.dataset['code'] ?? '');
+        const hint = b.querySelector('span');
+        if (hint) hint.textContent = 'скопировано';
       }),
     );
   };
-  tabs('.type-tab', '.type-panel');
-  tabs('.exp-tab', '.exp-panel');
-  document.querySelectorAll<HTMLButtonElement>('.copy-code').forEach((b) =>
-    b.addEventListener('click', async () => {
-      await navigator.clipboard?.writeText(b.dataset['code'] ?? '');
-      const hint = b.querySelector('span');
-      if (hint) hint.textContent = 'скопировано';
-    }),
-  );
+  document.addEventListener('astro:page-load', init);
 </script>
-
-<style>
-  .type-tab[aria-selected='true'] span {
-    background: var(--color-mint);
-  }
-</style>

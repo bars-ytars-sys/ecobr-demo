@@ -40,8 +40,12 @@ const crumbs = [
   { href: '/doma', label: 'Каталог домов' },
   { href: `/doma/${house.id}`, label: h.name },
 ];
-
-const features = [h.banya && 'Баня', h.chan && 'Банный чан', `До ${h.capacity} гостей`].filter((x): x is string => Boolean(x));
+const facts = [
+  { k: 'Гостей', v: `до ${h.capacity}` },
+  { k: 'Банный чан', v: h.chan ? 'есть' : '—' },
+  { k: 'Баня', v: h.banya ? 'своя' : 'в SPA, 300 м' },
+  { k: 'Кадров', v: String(h.gallery.length) },
+];
 
 const jsonLd = [
   {
@@ -54,90 +58,89 @@ const jsonLd = [
     image: new URL(og.src, site.url).href,
     occupancy: { '@type': 'QuantitativeValue', minValue: 1, maxValue: h.capacity },
     petsAllowed: true,
-    amenityFeature: features.slice(0, -1).map((name) => ({ '@type': 'LocationFeatureSpecification', name, value: true })),
+    amenityFeature: [h.chan && 'Банный чан', h.banya && 'Собственная баня']
+      .filter((x): x is string => Boolean(x))
+      .map((name) => ({ '@type': 'LocationFeatureSpecification', name, value: true })),
     containedInPlace: { '@id': `${site.url}/#organization` },
     offers: [
-      { '@type': 'Offer', name: 'Будние дни (заезд с воскресенья по четверг)', price: h.price.weekday, priceCurrency: 'RUB', url, availability: 'https://schema.org/InStock', businessFunction: 'http://purl.org/goodrelations/v1#LeaseOut' },
-      { '@type': 'Offer', name: 'Выходные дни (заезд в пятницу и субботу от 2 ночей)', price: h.price.weekend, priceCurrency: 'RUB', url, availability: 'https://schema.org/InStock', businessFunction: 'http://purl.org/goodrelations/v1#LeaseOut' },
+      { '@type': 'Offer', name: 'Будние дни (заезд с воскресенья по четверг)', price: h.price.weekday, priceCurrency: 'RUB', url, availability: 'https://schema.org/InStock' },
+      { '@type': 'Offer', name: 'Выходные дни (заезд в пятницу и субботу от 2 ночей)', price: h.price.weekend, priceCurrency: 'RUB', url, availability: 'https://schema.org/InStock' },
     ],
   },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
-  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
 ];
 ---
 
 <Base title={h.title} description={h.description} ogImage={og.src} jsonLd={jsonLd}>
-  <div class="wrap pt-6">
-    <Breadcrumbs items={crumbs} />
-  </div>
-
-  {/* Карточка дома — композиция текущего сайта */}
-  <section class="wrap pt-6">
-    <div class="card relative grid gap-8 overflow-hidden p-5 sm:p-8 lg:grid-cols-[1.4fr_0.9fr_0.8fr] lg:items-center">
-      <div class="pointer-events-none absolute -top-24 -left-24 size-80 rounded-full bg-mint/20 blur-3xl"></div>
-      <div class="relative">
-        <p class="mark w-fit text-xs font-semibold">{h.tagline}</p>
-        <h1 class="mt-4 text-4xl sm:text-5xl">{h.name}</h1>
-        <p class="mt-4 max-w-lg text-[0.95rem] leading-relaxed">{h.lead}</p>
-      </div>
-      <div class="relative">
-        <ul class="space-y-3">
-          {
-            features.map((f) => (
-              <li class="flex items-center gap-3 text-sm">
-                <span class="grid size-8 place-items-center rounded-full bg-mint-soft text-mint-dark" aria-hidden="true">✓</span>
-                {f}
-              </li>
-            ))
-          }
-        </ul>
-        <a href={site.booking} class="btn-mint mt-5 w-full sm:w-auto">Проверить даты</a>
-      </div>
-      <Picture formats={['avif', 'webp']} src={h.gallery[1] ?? h.cover} alt={`${h.name}: интерьер`} widths={[320, 480]} sizes="(min-width: 1024px) 260px, 90vw" class="relative hidden aspect-[4/3] w-full rounded-[14px] object-cover lg:block" />
-    </div>
-  </section>
-
-  <section class="wrap pt-10" aria-labelledby="photos-title">
-    <h2 id="photos-title" class="border-b-2 border-mint pb-3 font-display text-sm uppercase">Фото дома «{h.name}»</h2>
-    <div class="mt-6">
-      <Gallery images={h.gallery} name={h.name} />
-    </div>
-  </section>
-
-  {/* Цены — карточки будни/выходные с выделением, как на сайте */}
-  <section class="wrap py-12" aria-labelledby="price-title">
-    <h2 id="price-title" class="sr-only">Стоимость проживания в доме «{h.name}»</h2>
-    <div class="grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-start">
-      <div>
-        <div class="grid gap-4 sm:grid-cols-2">
-          <div class="card p-5">
-            <p class="font-display text-lg uppercase">Будние дни</p>
-            <p class="text-sm text-muted">(заезд <b class="text-ink">с воскресенья по четверг</b>)</p>
-            <p class="mt-3 font-display text-2xl">от <span class="mark">{rub(h.price.weekday)}</span> <span class="font-sans text-xs text-muted">/сутки*</span></p>
-          </div>
-          <div class="card p-5">
-            <p class="font-display text-lg uppercase">Выходные дни</p>
-            <p class="text-sm text-muted">(заезд <b class="text-ink">в пятницу и субботу</b> от 2 ночей)</p>
-            <p class="mt-3 font-display text-2xl">от <span class="mark">{rub(h.price.weekend)}</span> <span class="font-sans text-xs text-muted">/сутки*</span></p>
-          </div>
+  {/* Первый экран дома: обложка в скруглённой карточке + плавающая цена */}
+  <section class="inset pt-[68px] sm:pt-[84px]">
+    <div class="relative isolate flex min-h-[78svh] flex-col justify-end overflow-hidden rounded-[var(--radius-xl)] text-white lg:min-h-[680px]">
+      <Picture
+        formats={['avif', 'webp']}
+        src={h.cover}
+        alt={`${h.name} в Берёзовой роще`}
+        widths={[640, 960, 1280, 1920, 2400]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="absolute inset-0 -z-20 h-full w-full object-cover"
+        transition:name={`cover-${house.id}`}
+      />
+      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-black/20 to-black/40"></div>
+      <div class="grid gap-6 px-4 pt-24 pb-5 sm:px-10 sm:pb-8 lg:grid-cols-[1.5fr_1fr] lg:items-end lg:px-14">
+        <div>
+          <div class="[&_a]:text-white/80 [&_span]:text-white"><Breadcrumbs items={crumbs} /></div>
+          <p class="glass-dark mt-6 inline-flex rounded-full px-4 py-2 text-xs font-semibold" data-reveal>{h.tagline}</p>
+          <h1 class="mt-4 text-[2.8rem] leading-[0.95] sm:text-7xl lg:text-[5.5rem]" data-reveal style="--d:1">{h.name}</h1>
+          <dl class="glass-dark mt-6 grid max-w-2xl grid-cols-4 rounded-[18px] p-3 sm:p-4" data-reveal style="--d:2">
+            {facts.map((f) => <div class="px-1 sm:px-3"><dt class="text-[0.6rem] text-white/60 uppercase sm:text-xs">{f.k}</dt><dd class="font-display text-sm sm:text-xl">{f.v}</dd></div>)}
+          </dl>
         </div>
-        <a href="#lead" class="btn-outline mt-4 w-full">Заказать звонок</a>
-      </div>
-      <div class="space-y-3 text-sm">
-        {h.priceNotes.map((n) => <p>{n}</p>)}
-        <p>Комфортное размещение <b>до {h.capacity} человек</b></p>
-        <p class="text-muted">Отдел продаж работает ежедневно с 9:00 до 24:00. Если вы оставляете заявку в нерабочее время, вы можете самостоятельно <a class="text-mint-dark underline" href={site.booking}>забронировать дом здесь</a>.</p>
+        <div class="glass rounded-[22px] p-5 text-ink sm:p-6 lg:justify-self-end" data-reveal style="--d:3">
+          <div class="grid grid-cols-2 gap-4">
+            <div><p class="text-xs text-muted">Будни, вс–чт</p><p class="font-display text-2xl">{rub(h.price.weekday)}</p></div>
+            <div><p class="text-xs text-muted">Выходные, от 2 ночей</p><p class="font-display text-2xl">{rub(h.price.weekend)}</p></div>
+          </div>
+          <a href={site.booking} class="btn-mint mt-4 w-full">Проверить даты</a>
+          <p class="mt-2 text-center text-xs text-muted">Цена за сутки при двухместном размещении</p>
+        </div>
       </div>
     </div>
+  </section>
+
+  <section class="wrap py-12 sm:py-16" aria-labelledby="about-title">
+    <div class="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
+      <div data-reveal>
+        <p class="eyebrow">О доме</p>
+        <h2 id="about-title" class="h-section mt-3">{h.name} — {h.tagline}</h2>
+        <p class="mt-5 max-w-2xl text-lg leading-relaxed">{h.lead}</p>
+        <p class="mt-4 max-w-2xl text-muted">Рядом — SPA-комплекс с бассейном под открытым небом, ресторан, контактная ферма и рыбалка на собственных прудах. С животными можно.</p>
+      </div>
+      <div class="card p-6 text-sm" data-reveal style="--d:1">
+        <p class="font-display uppercase">Условия</p>
+        <ul class="mt-4 space-y-2.5">
+          {h.priceNotes.map((n) => <li class="flex gap-2"><span class="dot mt-2 shrink-0 text-mint" />{n.replace(/^\*/, '')}</li>)}
+          <li class="flex gap-2"><span class="dot mt-2 shrink-0 text-mint" />Комфортное размещение до {h.capacity} человек</li>
+          <li class="flex gap-2"><span class="dot mt-2 shrink-0 text-mint" />Отдел продаж работает ежедневно с 9:00 до 24:00</li>
+        </ul>
+        <a href="#lead" class="btn-dark mt-6 w-full">Заказать звонок</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap pb-12 sm:pb-16" aria-labelledby="photos-title">
+    <div class="flex items-end justify-between gap-4">
+      <h2 id="photos-title" class="h-section" data-reveal>Фотографии</h2>
+      <p class="eyebrow" data-reveal>{h.gallery.length} кадров</p>
+    </div>
+    <div class="mt-6"><Gallery images={h.gallery} name={h.name} /></div>
   </section>
 
   <section class="wrap pb-6" aria-labelledby="similar-title">
-    <h2 id="similar-title" class="h-section">Похожие дома</h2>
-    <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {similar.map((s) => <HouseCard house={s} />)}
+    <p class="eyebrow" data-reveal>Если хочется сравнить</p>
+    <h2 id="similar-title" class="h-section mt-3" data-reveal>Похожие дома</h2>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {similar.map((s, i) => <HouseCard house={s} delay={i} />)}
     </div>
   </section>
 

@@ -1,5 +1,4 @@
 ---
-import Branch from './Branch.astro';
 import { faq } from '../data/faq';
 
 // Две колонки аккордеонов как на текущем сайте; ответы в HTML (details) — видны поисковикам, есть FAQPage в JSON-LD страницы
@@ -7,10 +6,10 @@ const half = Math.ceil(faq.length / 2);
 const columns = [faq.slice(0, half), faq.slice(half)];
 ---
 
-<section id="faq" class="py-16 sm:py-24" aria-labelledby="faq-title">
+<section id="faq" class="py-16 sm:py-24" aria-labelledby="faq-title" data-reveal>
   <div class="wrap">
-    <h2 id="faq-title" class="h-section mx-auto max-w-3xl text-center">Часто задаваемые вопросы</h2>
-    <Branch class="mt-6" />
+    <p class="eyebrow text-center">Перед поездкой</p>
+    <h2 id="faq-title" class="h-section mx-auto mt-3 max-w-3xl text-center">Часто задаваемые вопросы</h2>
     <div class="mt-10 grid gap-x-12 md:grid-cols-2">
       {
         columns.map((col) => (

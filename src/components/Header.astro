@@ -3,26 +3,36 @@ import logo from '../assets/v2/brand/brand-02.svg';
 import { link, nav, site } from '../data/site';
 ---
 
-<header class="sticky top-0 z-50 bg-white/95 shadow-[0_1px_0_rgb(0_0_0/0.05)] backdrop-blur">
-  <div class="wrap flex h-16 items-center justify-between gap-3 lg:h-[72px]">
+{/* Плавающая стеклянная шапка-пилюля, как на открытьбазу.рф */}
+<header class="site-header fixed inset-x-0 top-0 z-50 px-2 pt-2 sm:px-3 sm:pt-3" transition:persist>
+  <div class="glass mx-auto flex h-14 max-w-[1400px] items-center gap-3 rounded-[18px] px-3 shadow-[0_10px_40px_-20px_rgb(0_0_0/0.35)] transition-all duration-500 sm:h-16 sm:px-5">
     <a href={link('/')} class="shrink-0" aria-label="Берёзовая роща — главная">
-      <img src={logo.src} width="120" height="44" alt="Берёзовая роща" class="h-9 w-auto lg:h-11" />
+      <img src={logo.src} width="120" height="44" alt="Берёзовая роща" class="h-8 w-auto sm:h-10" />
     </a>
 
-    <div class="ml-auto flex items-center gap-3 lg:gap-4">
-      <div class="text-right leading-tight">
-        <p class="hidden text-[0.7rem] text-muted sm:block">Отдел бронирования работает с 9:00 до 24:00</p>
-        <a href={site.phoneHref} class="font-display text-[0.8rem] sm:text-base">{site.phone}</a>
+    <a href={site.telegram} target="_blank" rel="noopener" class="ml-4 hidden items-center gap-2 text-xs leading-tight lg:flex">
+      <span class="grid size-8 place-items-center rounded-full bg-white ring-1 ring-line" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="m21 4-18 7 6 2 2 6 3-4 5 4z" stroke="#1d2623" stroke-width="1.8" stroke-linejoin="round" /></svg>
+      </span>
+      Наш канал<br />в Telegram
+    </a>
+
+    <div class="ml-auto flex items-center gap-3 sm:gap-5">
+      <div class="hidden text-right leading-tight md:block">
+        <p class="text-[0.65rem] text-muted">бронирование 9:00–24:00</p>
+        <a href={site.phoneHref} class="font-display text-[0.95rem]">{site.phone}</a>
       </div>
-      <a href={`${link('/')}#lead`} class="btn-outline hidden px-4! py-3! md:inline-flex">Обратный звонок</a>
-      <a href={site.booking} class="btn-mint hidden px-4! py-3! lg:inline-flex">Проверить даты и забронировать</a>
+      <a href={site.booking} class="btn-mint hidden px-5! py-3! sm:inline-flex">Забронировать <span class="dot" aria-hidden="true"></span></a>
       <details class="menu relative">
-        <summary class="btn-outline cursor-pointer list-none rounded-full! px-4! py-2.5!">Меню</summary>
-        <nav aria-label="Основное меню" class="card absolute right-0 mt-3 w-72 p-6">
-          <ul class="space-y-3 font-display text-sm uppercase">
+        <summary class="flex cursor-pointer list-none items-center gap-2 px-1 font-display text-[0.78rem] uppercase">
+          Меню
+          <svg width="26" height="10" viewBox="0 0 26 10" fill="none" aria-hidden="true"><path d="M0 1h26M8 9h18" stroke="currentColor" stroke-width="1.6" /></svg>
+        </summary>
+        <nav aria-label="Основное меню" class="card absolute right-0 mt-5 w-[min(88vw,320px)] p-6">
+          <ul class="space-y-3.5 font-display text-sm uppercase">
             {nav.map((i) => <li><a class="hover:text-mint-dark" href={link(i.href)}>{i.label}</a></li>)}
           </ul>
-          <a href={site.booking} class="btn-mint mt-6 w-full lg:hidden">Проверить даты</a>
+          <a href={site.phoneHref} class="mt-6 block font-display">{site.phone}</a>
         </nav>
       </details>
     </div>
@@ -30,12 +40,12 @@ import { link, nav, site } from '../data/site';
 </header>
 
 <script>
-  // Меню закрывается по клику вне и по Esc
-  const menu = document.querySelector<HTMLDetailsElement>('details.menu');
-  document.addEventListener('click', (e) => {
-    if (menu?.open && !menu.contains(e.target as Node)) menu.open = false;
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && menu) menu.open = false;
-  });
+  const init = () => {
+    const menu = document.querySelector<HTMLDetailsElement>('details.menu');
+    if (menu) menu.open = false;
+    document.addEventListener('click', (e) => {
+      if (menu?.open && !menu.contains(e.target as Node)) menu.open = false;
+    });
+  };
+  document.addEventListener('astro:page-load', init);
 </script>

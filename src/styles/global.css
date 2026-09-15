@@ -1,26 +1,25 @@
 @import 'tailwindcss';
 
-/* Дизайн-система текущего ecobr.ru: светлый фон, белые карточки, мятный акцент, заголовки Despair Display капсом.
-   Отличия от Тильды — только там, где страдала доступность: тёмный текст на мятных кнопках (контраст ≥ 4.5). */
+/* Фирменный стиль ecobr (мятный, Despair Display) в подаче открытьбазу.рф:
+   скруглённые «медиа-карточки» с отступом, стекло, крупные цифры, тёмные фото-секции */
 @theme {
-  --color-page: #f4f6fb;
+  --color-page: #eef1f3;
   --color-card: #ffffff;
-  --color-ink: #1a1b19;
-  --color-ink-2: #222831;
-  --color-muted: #5f636b;
-  --color-line: #e6e8ee;
+  --color-ink: #1d2623;
+  --color-muted: #5b6662;
+  --color-line: #dfe5e3;
   --color-mint: #2ed8a3;
   --color-mint-dark: #0b7a58;
-  --color-mint-soft: #e3f8f0;
+  --color-mint-soft: #dff7ee;
+  --color-teal: #1f6f5c;
+  --color-night: #1c2724;
   --color-highlight: #9aed9b;
-  --color-forest: #1e5128;
-  --color-leaf: #c2a878;
 
   --font-display: var(--font-despair), Arial, sans-serif;
   --font-sans: var(--font-manrope), Arial, sans-serif;
 
-  --radius-card: 20px;
-  --shadow-card: 0 10px 40px -18px rgb(26 27 25 / 0.18);
+  --radius-xl: 28px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
@@ -35,8 +34,8 @@
   h2,
   h3 {
     @apply font-display uppercase;
-    letter-spacing: 0.01em;
-    line-height: 1.05;
+    letter-spacing: 0.02em;
+    line-height: 1.04;
     text-wrap: balance;
   }
   p {
@@ -45,46 +44,113 @@
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-mint-dark;
   }
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
+}
+
+@utility wrap {
+  @apply mx-auto w-full max-w-[1240px] px-4 sm:px-8;
+}
+@utility inset {
+  @apply mx-2 sm:mx-3;
+}
+@utility card {
+  @apply rounded-[20px] bg-card shadow-[0_18px_50px_-30px_rgb(20_40_34/0.35)];
+}
+@utility glass {
+  @apply border border-white/60 bg-white/70 backdrop-blur-xl;
+}
+@utility glass-dark {
+  @apply border border-white/15 bg-black/25 text-white backdrop-blur-xl;
+}
+@utility eyebrow {
+  @apply text-[0.72rem] font-semibold tracking-[0.18em] text-muted uppercase;
+}
+@utility h-section {
+  @apply font-display text-[2rem] leading-[1.02] uppercase sm:text-5xl lg:text-[3.6rem];
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2.5 rounded-full px-6 py-4 text-center font-display text-[0.78rem] tracking-[0.04em] uppercase transition duration-300 ease-[var(--ease-out)];
+}
+@utility btn-mint {
+  @apply btn bg-mint text-[#083a2b] shadow-[0_12px_30px_-12px_rgb(46_216_163/0.9)] hover:-translate-y-0.5 hover:bg-[#3fe3b0];
+}
+@utility btn-dark {
+  @apply btn bg-night text-white hover:-translate-y-0.5 hover:bg-black;
+}
+@utility btn-ghost {
+  @apply btn ring-1 ring-current/30 hover:ring-current;
+}
+@utility dot {
+  @apply inline-block size-1.5 rounded-full bg-current;
+}
+@utility scroller {
+  @apply flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+}
+
+/* Появление при прокрутке: без JS контент виден сразу (класс js ставится скриптом) */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity 0.9s var(--ease-out),
+    transform 0.9s var(--ease-out);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes kenburns {
+  from {
+    transform: scale(1.12);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Параллакс тёмных фото-секций на скролле (где браузер умеет scroll-driven animations) */
+@supports (animation-timeline: view()) {
+  .parallax-img {
+    animation: parallax linear both;
+    animation-timeline: view();
+  }
+  @keyframes parallax {
+    from {
+      transform: translateY(-8%) scale(1.15);
     }
-    *,
-    *::before,
-    *::after {
-      animation: none !important;
-      transition-duration: 0.01ms !important;
+    to {
+      transform: translateY(8%) scale(1.15);
     }
   }
 }
 
-@utility wrap {
-  @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6;
-}
-@utility card {
-  @apply rounded-[var(--radius-card)] bg-card shadow-[var(--shadow-card)];
-}
-@utility h-section {
-  @apply font-display text-[1.9rem] leading-[1.05] uppercase sm:text-5xl lg:text-[3.4rem];
-}
-@utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-[10px] px-5 py-3.5 text-center font-display text-[0.78rem] leading-tight tracking-[0.02em] uppercase transition duration-300;
-}
-@utility btn-mint {
-  @apply btn bg-mint text-[#0b3b2c] shadow-[0_8px_20px_-8px_rgb(46_216_163/0.7)] hover:bg-[#25c794];
-}
-@utility btn-outline {
-  @apply btn bg-white text-mint-dark ring-1 ring-mint hover:bg-mint-soft;
-}
-@utility btn-forest {
-  @apply btn bg-forest text-white hover:bg-[#173f1f];
-}
-@utility chip {
-  @apply inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 font-display text-[0.7rem] uppercase shadow-sm;
-}
-@utility mark {
-  @apply rounded-[6px] bg-highlight px-1.5;
-}
-@utility scroller {
-  @apply flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
 }

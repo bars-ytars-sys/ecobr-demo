@@ -1,11 +1,12 @@
 ---
+import { Picture } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import HouseCard from '../../components/HouseCard.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import Branch from '../../components/Branch.astro';
 import LeadForm from '../../components/LeadForm.astro';
 import { site } from '../../data/site';
+import cover from '../../assets/houses/aframe-luxe-black/aframe-luxe-black-01.jpg';
 
 const houses = (await getCollection('houses')).sort((a, b) => a.data.order - b.data.order);
 const crumbs = [
@@ -34,25 +35,26 @@ const jsonLd = [
   description="Дома базы отдыха «Берёзовая роща»: А-фреймы, барнхаусы, шале, Сфера и Панорама с банным чаном и баней, от 2 до 10 гостей. Цены и фото."
   jsonLd={jsonLd}
 >
-  <section class="wrap pt-6 pb-4">
-    <Breadcrumbs items={crumbs} />
-    <h1 class="h-section mt-8">Каталог домов для разных <br class="hidden sm:block" />сценариев отдыха</h1>
-    <p class="mt-4 max-w-2xl text-muted">
-      Каждый домик на базе отдыха «Берёзовая роща» — уникальный проект со стильным дизайном и собственной территорией. У одних домов есть банные чаны, у других — бани для полного релакса.
-    </p>
-    <nav class="mt-6 flex flex-wrap gap-2" aria-label="Разделы каталога">
-      {groups.map((g) => <a href={`#${g.id}`} class="chip hover:bg-mint-soft">{g.title}</a>)}
-    </nav>
-    <Branch class="mt-8" />
+  <section class="inset pt-[68px] sm:pt-[84px]">
+    <div class="relative isolate overflow-hidden rounded-[var(--radius-xl)] px-5 py-14 text-white sm:px-10 sm:py-20 lg:px-14">
+      <Picture formats={['avif', 'webp']} src={cover} alt="" widths={[800, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover" />
+      <div class="absolute inset-0 -z-10 bg-gradient-to-r from-black/75 via-black/45 to-black/10"></div>
+      <div class="[&_a]:text-white/80 [&_span]:text-white"><Breadcrumbs items={crumbs} /></div>
+      <h1 class="mt-8 max-w-3xl text-[2.3rem] leading-[1] sm:text-6xl lg:text-7xl" data-reveal>Каталог домов для разных сценариев отдыха</h1>
+      <p class="mt-4 max-w-xl text-white/85" data-reveal>Каждый домик — уникальный проект со стильным дизайном и собственной территорией. У одних домов есть банные чаны, у других — бани.</p>
+      <nav class="mt-8 flex flex-wrap gap-2" aria-label="Разделы каталога" data-reveal>
+        {groups.map((g) => <a href={`#${g.id}`} class="glass-dark rounded-full px-4 py-2.5 font-display text-xs uppercase hover:bg-white hover:text-ink">{g.title}</a>)}
+      </nav>
+    </div>
   </section>
 
   {
     groups.map((g) => (
-      <section id={g.id} class="wrap scroll-mt-24 py-8" aria-labelledby={`${g.id}-title`}>
-        <h2 id={`${g.id}-title`} class="font-display text-2xl uppercase sm:text-3xl">{g.title}</h2>
-        <p class="mt-2 text-muted">{g.note}</p>
-        <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {houses.filter((h) => h.data.scenarios.includes(g.id)).map((h) => <HouseCard house={h} />)}
+      <section id={g.id} class="wrap scroll-mt-24 py-10 sm:py-14" aria-labelledby={`${g.id}-title`}>
+        <p class="eyebrow" data-reveal>{g.note}</p>
+        <h2 id={`${g.id}-title`} class="h-section mt-3" data-reveal>{g.title}</h2>
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {houses.filter((h) => h.data.scenarios.includes(g.id)).map((h, i) => <HouseCard house={h} delay={i} />)}
         </div>
       </section>
     ))

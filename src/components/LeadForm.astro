@@ -10,10 +10,10 @@
     <p class="relative mx-auto mt-4 max-w-md text-muted">Иногда достаточно одного решения, чтобы всё внутри стало тише</p>
     <form class="lead-form relative mx-auto mt-8 grid max-w-3xl gap-3 sm:grid-cols-[1fr_1fr_auto]">
       <label class="sr-only" for="lead-name">Ваше имя</label>
-      <input id="lead-name" name="name" required autocomplete="given-name" placeholder="Ваше имя" class="rounded-[10px] border border-line bg-page px-4 py-3.5 outline-none focus:border-mint" />
+      <input id="lead-name" name="name" required autocomplete="given-name" placeholder="Ваше имя" class="rounded-full border border-line bg-page px-5 py-3.5 outline-none focus:border-mint" />
       <label class="sr-only" for="lead-phone">Телефон</label>
-      <input id="lead-phone" name="phone" required type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (000) 000-00-00" class="rounded-[10px] border border-line bg-page px-4 py-3.5 outline-none focus:border-mint" />
-      <button type="submit" class="btn-forest">Подобрать дом</button>
+      <input id="lead-phone" name="phone" required type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (000) 000-00-00" class="rounded-full border border-line bg-page px-5 py-3.5 outline-none focus:border-mint" />
+      <button type="submit" class="btn-dark">Подобрать дом</button>
       <label class="flex items-center gap-2 text-left text-xs text-muted sm:col-span-3">
         <input type="checkbox" required checked class="size-4 accent-[#2ed8a3]" />
         Я согласен(на) с Политикой конфиденциальности
@@ -24,10 +24,12 @@
 </section>
 
 <script>
-  document.querySelectorAll<HTMLFormElement>('.lead-form').forEach((f) =>
-    f.addEventListener('submit', (e) => {
-      e.preventDefault();
-      f.querySelector('.lead-ok')?.classList.remove('hidden');
-    }),
-  );
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLFormElement>('.lead-form').forEach((f) =>
+      f.addEventListener('submit', (e) => {
+        e.preventDefault();
+        f.querySelector('.lead-ok')?.classList.remove('hidden');
+      }),
+    );
+  });
 </script>

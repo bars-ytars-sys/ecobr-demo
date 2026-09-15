@@ -5,36 +5,38 @@ import { link, rub } from '../data/site';
 
 interface Props {
   house: CollectionEntry<'houses'>;
-  headingLevel?: 'h2' | 'h3';
+  size?: 'lg' | 'md';
+  delay?: number;
 }
-const { house, headingLevel = 'h3' } = Astro.props;
+const { house, size = 'md', delay = 0 } = Astro.props;
 const h = house.data;
-const Heading = headingLevel;
+const href = link(`/doma/${house.id}`);
 ---
 
-<article class="card group flex h-full flex-col overflow-hidden">
-  <a href={link(`/doma/${house.id}`)} class="relative block overflow-hidden" tabindex="-1" aria-hidden="true">
+{/* Карточка в стиле «проектов» открытьбазу.рф: большое фото, счётчик кадров, цена */}
+<article class="card group relative flex h-full flex-col overflow-hidden" data-reveal style={`--d:${delay}`}>
+  <div class:list={['relative overflow-hidden', size === 'lg' && 'lg:flex-1']}>
     <Picture
       formats={['avif', 'webp']}
       src={h.cover}
-      alt=""
-      widths={[360, 540, 720]}
-      sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 90vw"
-      class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-105"
+      alt={`${h.name} — дом в Берёзовой роще`}
+      widths={size === 'lg' ? [480, 760, 1100] : [360, 540, 760]}
+      sizes={size === 'lg' ? '(min-width: 1024px) 60vw, 94vw' : '(min-width: 1024px) 380px, (min-width: 640px) 46vw, 94vw'}
+      class:list={['w-full object-cover transition duration-[1200ms] ease-[var(--ease-out)] group-hover:scale-[1.06]', size === 'lg' ? 'aspect-[16/10] lg:aspect-auto lg:h-full' : 'aspect-[4/3]']}
+      transition:name={`cover-${house.id}`}
     />
-    {h.badge && <span class="chip absolute top-3 left-3 text-[0.6rem]!">{h.badge}</span>}
-  </a>
+    {h.badge && <span class="glass absolute top-3 left-3 rounded-full px-3 py-1.5 text-[0.68rem] font-semibold">{h.badge}</span>}
+    <span class="glass-dark absolute right-3 bottom-3 rounded-full px-3 py-1.5 text-[0.7rem]">{h.gallery.length} кадров ↗</span>
+  </div>
   <div class="flex flex-1 flex-col p-5">
-    <p class="w-fit rounded-[6px] bg-highlight/70 px-2 py-0.5 text-xs font-semibold">{h.tagline}</p>
-    <Heading class="mt-3 text-xl">
-      <a href={link(`/doma/${house.id}`)} class="hover:text-mint-dark">{h.name}</a>
-    </Heading>
-    <ul class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted">
-      <li>до {h.capacity} гостей</li>
-      {h.chan && <li>банный чан</li>}
-      {h.banya && <li>баня</li>}
-    </ul>
-    <p class="mt-4 font-display text-lg">от <span class="mark">{rub(h.price.weekday)}</span> <span class="font-sans text-xs text-muted normal-case">/ сутки</span></p>
-    <a href={link(`/doma/${house.id}`)} class="btn-outline mt-5 w-full">Подробнее о доме</a>
+    <h3 class:list={['leading-tight', size === 'lg' ? 'text-2xl sm:text-3xl' : 'text-lg']}>
+      <a href={href} class="after:absolute after:inset-0">{h.name}</a>
+    </h3>
+    <p class="mt-1 text-sm font-semibold text-teal">{h.tagline}</p>
+    <p class="mt-3 line-clamp-3 text-sm text-muted">{h.lead}</p>
+    <div class="mt-auto flex items-end justify-between gap-3 pt-5">
+      <p class="text-sm text-muted">до {h.capacity} гостей{h.banya ? ' · баня' : ''} · чан</p>
+      <p class="font-display text-lg whitespace-nowrap">от {rub(h.price.weekday)}</p>
+    </div>
   </div>
 </article>
