@@ -14,7 +14,6 @@ import darkBg from '../assets/houses/barn-1/barn-1-01.jpg';
 import spaPool from '../assets/site/spa-pool.jpg';
 import vipBath from '../assets/site/vip-bath.jpg';
 import vipEvening from '../assets/site/vip-evening.jpg';
-import chanOrange from '../assets/site/chan-orange.jpg';
 import badgeYandex from '../assets/v2/brand/brand-05.png';
 import badgeSplit from '../assets/v2/brand/brand-04.png';
 import mapImg from '../assets/v2/map/map-01.webp';
@@ -24,11 +23,17 @@ const og = await getImage({ src: heroPoster, width: 1200, format: 'jpg' });
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const dateRu = (d: string) => new Date(d).toLocaleDateString('ru-RU');
 
+const icon = (d: string) => `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const pillars = [
-  { n: '01', title: '22 дизайнерских дома', text: 'У каждого своя атмосфера и, как правило, огороженная территория', href: '/doma' },
-  { n: '02', title: 'SPA-комплекс', text: 'Бассейн под открытым небом, хамам, русская и японская бани', href: '/spa' },
-  { n: '03', title: 'Бани и чаны', text: 'Авторские составы, программы парения, чаны с хвоей и цитрусом', href: '/banchan' },
-  { n: '04', title: 'Ресторан и ферма', text: 'Завтраки «шведский стол», обеды и ужины, контактная ферма', href: '/about' },
+  { icon: icon('<path d="M3 20h18M5 20V10l7-6 7 6v10"/><path d="M10 20v-5h4v5"/>'), title: '22 дизайнерских дома', text: 'У каждого своя атмосфера и территория', href: '/doma' },
+  { icon: icon('<path d="M3 16c2 0 2-1.5 4.5-1.5S9.5 16 12 16s2.5-1.5 4.5-1.5S19 16 21 16"/><path d="M3 20c2 0 2-1.5 4.5-1.5S9.5 20 12 20s2.5-1.5 4.5-1.5S19 20 21 20"/><path d="M8 12V5a2 2 0 0 1 4 0M12 12V5a2 2 0 0 1 4 0"/>'), title: 'SPA-комплекс', text: 'Бассейн под открытым небом, хамам, бани', href: '/spa' },
+  { icon: icon('<path d="M4 11h16l-1.5 9h-13z"/><path d="M9 7c0-2 2-2 2-4M13 7c0-2 2-2 2-4"/>'), title: 'Бани и банные чаны', text: 'Авторские составы и программы парения', href: '/banchan' },
+  { icon: icon('<path d="M4 3v8a3 3 0 0 0 6 0V3M7 3v18M17 21V3c-2 1-3 4-3 7h3"/>'), title: 'Ресторан и ферма', text: 'Шведский стол, обеды, ужины и животные', href: '/about' },
+];
+const howTo = [
+  { name: 'Выберите даты и дом', text: 'Посмотрите свободные дома в онлайн-модуле бронирования или подберите дом по составу гостей.' },
+  { name: 'Забронируйте', text: 'Онлайн — сразу, или по телефону +7 (495) 120-20-08 с 9:00 до 24:00. Можно оплатить частями через «Яндекс Сплит».' },
+  { name: 'Приезжайте', text: 'Около 40 минут на машине от Москвы, на территории есть парковка. Банный чан и SPA можно добавить заранее.' },
 ];
 const stats = [
   { v: 22, suffix: '', label: 'дизайнерских дома' },
@@ -38,7 +43,6 @@ const stats = [
   { v: 300, suffix: ' м', label: 'до SPA и прудов' },
   { v: 10, suffix: '', label: 'гостей в самом большом доме' },
 ];
-const chat = [faq[2]!, faq[6]!, faq[9]!];
 
 const jsonLd = [
   {
@@ -68,6 +72,7 @@ const jsonLd = [
   },
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
   { '@context': 'https://schema.org', '@type': 'WebSite', name: site.name, url: `${site.url}/`, inLanguage: 'ru-RU' },
+  { '@context': 'https://schema.org', '@type': 'HowTo', name: 'Как забронировать дом в Берёзовой роще', step: howTo.map((st, i) => ({ '@type': 'HowToStep', position: i + 1, name: st.name, text: st.text })) },
 ];
 ---
 
@@ -77,9 +82,9 @@ const jsonLd = [
   ogImage={og.src}
   jsonLd={jsonLd}
 >
-  {/* ═══ ПЕРВЫЙ ЭКРАН: живое видео в скруглённой карточке + бронь прямо здесь ═══ */}
-  <section class="inset relative pt-[68px] sm:pt-[84px]">
-    <div class="relative isolate flex min-h-[calc(100svh-80px)] flex-col justify-end overflow-hidden rounded-[var(--radius-xl)] text-white sm:min-h-[calc(100svh-100px)] lg:min-h-[720px]">
+  {/* ═══ ПЕРВЫЙ ЭКРАН: видео на всю ширину, мягкая волна снизу, бронь отдельной панелью ═══ */}
+  <section class="relative" data-hero-dark>
+    <div class="relative isolate flex min-h-[92svh] items-center overflow-hidden text-white lg:min-h-[760px]">
       <Picture
         formats={['avif', 'webp']}
         src={heroPoster}
@@ -101,92 +106,96 @@ const jsonLd = [
         data-desktop={`${base}/video/hero.webm|${base}/video/hero.mp4`}
         data-mobile={`${base}/video/hero-mobile.mp4`}
       ></video>
-      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-black/25 to-black/35"></div>
+      <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_30%_60%,rgb(0_0_0/0.55),rgb(0_0_0/0.15)_70%)]"></div>
 
-      <div class="relative px-4 pt-20 pb-4 sm:px-10 sm:pb-7 lg:px-14">
-        <div class="grid gap-8 lg:grid-cols-[2.2fr_1fr] lg:items-end">
-          <div>
-            <p class="glass-dark inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold" data-reveal>
-              <span class="dot animate-pulse text-mint"></span> База отдыха · 40 минут от Москвы
-            </p>
-            {/* H1 дословно с текущего сайта — ключевой запрос в начале */}
-            <h1 class="mt-4 max-w-4xl text-[1.9rem] leading-[1.02] sm:text-5xl lg:text-[2.9rem] 2xl:text-[3.9rem]" data-reveal style="--d:1">
-              База отдыха «Берёзовая роща» с&nbsp;питанием и&nbsp;SPA в&nbsp;Подмосковье
-            </h1>
-            <p class="mt-3 max-w-xl text-[0.95rem] text-white/85 sm:text-lg" data-reveal style="--d:2">
-              22 дизайнерских дома среди берёз, SPA-комплекс, бани, банные чаны, ресторан и ферма с животными.
-            </p>
-          </div>
-          <a href={link('/special')} class="group hidden max-w-sm animate-[float_6s_ease-in-out_infinite] rounded-[20px] bg-teal/90 p-5 backdrop-blur lg:block lg:justify-self-end" data-reveal style="--d:3">
-            <p class="eyebrow text-white/70">Тёплая осень</p>
-            <p class="mt-2 font-display text-lg uppercase">Ароматный чан в подарок</p>
-            <p class="mt-1 text-sm text-white/80">По промокоду ОСЕНЬ2026 на заезды в период акции</p>
-            <p class="mt-3 font-display text-sm uppercase">Смотреть акции <span class="inline-block transition group-hover:translate-x-1">→</span></p>
-          </a>
+      <div class="wrap pt-24 pb-40 sm:pb-44">
+        <a href={link('/special')} class="inline-flex max-w-full items-center gap-3 rounded-full bg-mint py-1.5 pr-4 pl-1.5 text-sm font-semibold text-[#083a2b] shadow-lg transition hover:bg-[#3fe3b0]" data-reveal>
+          <span class="rounded-full bg-white px-2.5 py-1 text-xs">Тёплая осень</span>
+          <span class="truncate">Ароматный чан в подарок</span>
+          <span aria-hidden="true">→</span>
+        </a>
+        {/* H1 дословно с текущего сайта — ключевой запрос в начале */}
+        <h1 class="mt-6 max-w-4xl text-[2.1rem] leading-[1.02] [text-shadow:0_2px_30px_rgb(0_0_0/0.35)] sm:text-6xl lg:text-[4.2rem]" data-reveal style="--d:1">
+          База отдыха «Берёзовая роща» с&nbsp;питанием и&nbsp;SPA в&nbsp;Подмосковье
+        </h1>
+        <p class="mt-5 max-w-lg text-base text-white/90 sm:text-lg" data-reveal style="--d:2">
+          22 дизайнерских дома среди берёз, SPA-комплекс, бани и банные чаны, ресторан и ферма — в 40 минутах от Москвы.
+        </p>
+        <div class="mt-7 flex flex-wrap gap-3" data-reveal style="--d:3">
+          <a href={link('/doma')} class="btn bg-white text-ink hover:bg-mint">Выбрать дом</a>
+          <a href={site.phoneHref} class="btn-ghost">{site.phone}</a>
         </div>
+      </div>
+      {/* Мягкая волна вместо прямого края */}
+      <svg class="absolute inset-x-0 -bottom-px h-16 w-full text-page sm:h-24" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 60 C240 10 480 10 720 45 C960 80 1200 90 1440 40 L1440 100 L0 100 Z" fill="currentColor" />
+      </svg>
+    </div>
 
-        {/* Бронирование в первом экране — фасад модуля Bnovo (имена параметров сверить на проде) */}
-        <form action={site.booking} method="get" class="glass mt-6 grid grid-cols-2 gap-2 rounded-[22px] p-2 text-ink sm:mt-8 sm:grid-cols-[1fr_1fr_0.7fr_auto]" data-reveal style="--d:3">
-          <label class="rounded-[16px] bg-white/85 px-4 py-2.5">
-            <span class="block text-[0.62rem] font-semibold tracking-wider text-muted uppercase">Заезд</span>
-            <input type="date" name="dfrom" class="w-full bg-transparent text-[0.92rem] font-semibold outline-none" />
-          </label>
-          <label class="rounded-[16px] bg-white/85 px-4 py-2.5">
-            <span class="block text-[0.62rem] font-semibold tracking-wider text-muted uppercase">Выезд</span>
-            <input type="date" name="dto" class="w-full bg-transparent text-[0.92rem] font-semibold outline-none" />
-          </label>
-          <label class="col-span-2 rounded-[16px] bg-white/85 px-4 py-2.5 sm:col-span-1">
-            <span class="block text-[0.62rem] font-semibold tracking-wider text-muted uppercase">Гостей</span>
-            <select name="adults" class="w-full bg-transparent text-[0.92rem] font-semibold outline-none">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => <option selected={n === 2}>{n}</option>)}
-            </select>
-          </label>
-          <button type="submit" class="btn-mint col-span-2 rounded-[16px]! py-4! sm:col-span-1 sm:px-8!">Найти свободные дома</button>
-        </form>
-        <div class="mt-4 hidden items-center gap-3 text-xs text-white/80 sm:flex">
-          <Image src={badgeYandex} width={80} alt="Хорошее место по версии Яндекса" class="h-9 w-auto rounded-md" />
-          <span>«Хорошее место» по версии Яндекса 5 лет подряд</span>
-          <Image src={badgeSplit} width={160} alt="Яндекс Сплит" class="ml-4 h-8 w-auto rounded-full bg-white px-2" />
-          <span>Оплата частями без переплат</span>
-        </div>
+    {/* Бронь — белая панель, заходящая на первый экран (фасад Bnovo, параметры сверить на проде) */}
+    <div class="wrap relative z-10 -mt-32 sm:-mt-28">
+      <form action={site.booking} method="get" class="card grid grid-cols-2 items-end gap-3 p-4 sm:p-5 lg:grid-cols-[1fr_1fr_0.7fr_auto]" data-reveal>
+        <p class="col-span-2 flex items-center gap-2 font-display text-sm uppercase lg:col-span-4"><span class="dot animate-pulse text-mint"></span>Онлайн-бронирование</p>
+        <label class="grid gap-1 text-xs font-semibold text-muted">Заезд<input type="date" name="dfrom" class="rounded-[14px] border border-line bg-page px-3 py-3 text-[0.95rem] text-ink" /></label>
+        <label class="grid gap-1 text-xs font-semibold text-muted">Выезд<input type="date" name="dto" class="rounded-[14px] border border-line bg-page px-3 py-3 text-[0.95rem] text-ink" /></label>
+        <label class="col-span-2 grid gap-1 text-xs font-semibold text-muted lg:col-span-1">Гостей
+          <select name="adults" class="rounded-[14px] border border-line bg-page px-3 py-3 text-[0.95rem] text-ink">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => <option selected={n === 2}>{n}</option>)}
+          </select>
+        </label>
+        <button type="submit" class="btn-mint col-span-2 rounded-[14px]! py-4! lg:col-span-1 lg:px-8!">Найти свободные дома</button>
+      </form>
+      <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 px-1 text-sm text-muted">
+        <span class="flex items-center gap-2"><Image src={badgeYandex} width={64} alt="" class="h-7 w-auto rounded" />«Хорошее место» Яндекса 5 лет подряд</span>
+        <span class="flex items-center gap-2"><Image src={badgeSplit} width={120} alt="" class="h-6 w-auto rounded-full bg-white px-1.5" />оплата частями</span>
+        <span>с животными можно</span>
       </div>
     </div>
 
-    {/* Пристыкованная панель, как этапы на открытьбазу.рф */}
-    <div class="wrap relative z-10">
-      <div class="card grid rounded-t-none sm:grid-cols-2 lg:grid-cols-4">
-        {
-          pillars.map((p, i) => (
-            <a href={link(p.href)} class="group border-t border-line p-5 transition first:border-t-0 hover:bg-mint-soft sm:p-6 lg:border-t-0 lg:border-l lg:first:border-l-0" data-reveal style={`--d:${i}`}>
-              <p class="font-display text-sm uppercase"><span class="text-mint-dark">{p.n}</span> / {p.title}</p>
-              <p class="mt-2 text-sm text-muted">{p.text}</p>
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  {/* ═══ МАСШТАБ В ЦИФРАХ ═══ */}
-  <section class="wrap py-16 sm:py-24" aria-labelledby="stats-title">
-    <p class="eyebrow" data-reveal>Берёзовая роща в цифрах</p>
-    <h2 id="stats-title" class="h-section mt-3 max-w-4xl" data-reveal>Большая территория для&nbsp;тихого отдыха</h2>
-    <div class="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-3">
+    {/* Преимущества — строка иконок */}
+    <div class="wrap mt-12 grid grid-cols-2 gap-6 lg:grid-cols-4">
       {
-        stats.map((s, i) => (
-          <div class="rounded-[22px] bg-gradient-to-br from-white to-[#dfe9e5] p-5 [clip-path:polygon(0_0,100%_0,100%_74%,90%_100%,0_100%)] sm:p-7" data-reveal style={`--d:${i}`}>
-            <p class="font-display text-[2.4rem] leading-none text-teal sm:text-6xl">
-              <span data-count={s.v}>{s.v}</span>{s.suffix}
-            </p>
-            <p class="mt-2 text-[0.8rem] font-semibold uppercase sm:text-base">{s.label}</p>
-          </div>
+        pillars.map((p, i) => (
+          <a href={link(p.href)} class="group flex gap-4" data-reveal style={`--d:${i}`}>
+            <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-mint-soft text-mint-dark transition group-hover:bg-mint group-hover:text-[#083a2b]" aria-hidden="true" set:html={p.icon} />
+            <span>
+              <span class="block font-semibold">{p.title}</span>
+              <span class="mt-1 block text-sm text-muted">{p.text}</span>
+            </span>
+          </a>
         ))
       }
     </div>
   </section>
 
+  {/* ═══ ЦИФРЫ: тёмная полоса с контурными числами ═══ */}
+  <section class="mt-20 bg-night py-16 text-white sm:mt-28 sm:py-20" aria-labelledby="stats-title">
+    <div class="wrap">
+      <div class="grid gap-6 lg:grid-cols-[1fr_2fr] lg:items-end">
+        <div data-reveal>
+          <p class="eyebrow text-mint">Масштаб</p>
+          <h2 id="stats-title" class="h-section mt-3">Целая роща для&nbsp;отдыха</h2>
+        </div>
+        <p class="max-w-xl text-white/70 lg:justify-self-end" data-reveal>Большая территория с прудами, SPA-комплексом и рестораном — дома стоят свободно, у каждого своё пространство.</p>
+      </div>
+      <dl class="mt-12 grid grid-cols-2 gap-y-10 border-t border-white/10 pt-10 md:grid-cols-3 lg:grid-cols-6">
+        {
+          stats.map((s, i) => (
+            <div class="pr-4" data-reveal style={`--d:${i}`}>
+              <dt class="font-display text-5xl leading-none text-transparent [-webkit-text-stroke:1.5px_var(--color-mint)] sm:text-6xl">
+                <span data-count={s.v}>{s.v}</span>
+                <span class="ml-1 font-sans text-2xl font-bold text-mint [-webkit-text-stroke:0]">{s.suffix}</span>
+              </dt>
+              <dd class="mt-3 text-sm text-white/70">{s.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
   {/* Бегущая строка форматов домов — ссылки на карточки */}
-  <div class="relative overflow-hidden pb-8 [mask-image:linear-gradient(90deg,transparent,black_6%,black_94%,transparent)]" aria-label="Форматы домов">
+  <div class="relative overflow-hidden pt-10 pb-4 [mask-image:linear-gradient(90deg,transparent,black_6%,black_94%,transparent)]" aria-label="Форматы домов">
     <ul class="flex w-max animate-[marquee_45s_linear_infinite] gap-3 hover:[animation-play-state:paused]">
       {
         [...types, ...types].map((t, i) => (
@@ -259,7 +268,7 @@ const jsonLd = [
   </section>
 
   {/* ═══ ТЁМНАЯ ФОТО-СЕКЦИЯ: ПОДБОР ДОМА ═══ */}
-  <section id="quiz" class="inset relative isolate overflow-hidden rounded-[var(--radius-xl)] text-white" aria-labelledby="quiz-title">
+  <section id="quiz" class="relative isolate overflow-hidden text-white" aria-labelledby="quiz-title">
     <Picture formats={['avif', 'webp']} src={darkBg} alt="" widths={[800, 1280, 1920]} sizes="100vw" class="parallax-img absolute inset-0 -z-20 h-full w-full object-cover" />
     <div class="absolute inset-0 -z-10 bg-night/80"></div>
     <div class="wrap py-16 sm:py-24">
@@ -353,33 +362,26 @@ const jsonLd = [
     </div>
   </section>
 
-  {/* ═══ ДИАЛОГ: ответы в формате переписки (реальные ответы из FAQ) ═══ */}
-  <section class="wrap pb-16 sm:pb-24" aria-labelledby="chat-title">
-    <div class="relative isolate grid gap-10 overflow-hidden rounded-[var(--radius-xl)] bg-night p-6 text-white sm:p-10 lg:grid-cols-2 lg:items-center">
-      <Picture formats={['avif', 'webp']} src={chanOrange} alt="" widths={[800, 1200]} sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover opacity-20" />
+  {/* ═══ КАК ЗАБРОНИРОВАТЬ: 3 шага (+ HowTo в JSON-LD) ═══ */}
+  <section class="wrap pb-16 sm:pb-24" aria-labelledby="how-title">
+    <div class="grid gap-8 lg:grid-cols-[0.9fr_1.6fr] lg:items-center">
       <div data-reveal>
-        <p class="eyebrow text-white/60">С чего начать разговор</p>
-        <h2 id="chat-title" class="h-section mt-3">Спросите — отдел бронирования ответит</h2>
-        <p class="mt-4 max-w-md text-white/75">Напишите, с кем и когда хотите приехать, — подберём дом и расскажем, что включено в стоимость.</p>
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a href={site.telegram} target="_blank" rel="noopener" class="btn bg-white text-ink hover:bg-mint">Написать в Telegram</a>
-          <a href={site.phoneHref} class="btn-ghost">{site.phone}</a>
-        </div>
+        <p class="eyebrow">Бронирование</p>
+        <h2 id="how-title" class="h-section mt-3">Как забронировать дом</h2>
+        <p class="mt-4 max-w-sm text-muted">Три простых шага — и вы уже выбираете, какой состав залить в банный чан.</p>
+        <a href={site.telegram} target="_blank" rel="noopener" class="btn-dark mt-6">Спросить в Telegram</a>
       </div>
-      <div class="space-y-3">
+      <ol class="relative grid gap-4 sm:grid-cols-3">
         {
-          chat.flatMap((c, i) => [
-            <div class="glass-dark ml-auto max-w-[85%] rounded-[18px] rounded-br-sm p-4 text-sm" data-reveal style={`--d:${i * 2}`}>
-              <p class="text-[0.65rem] text-white/50 uppercase">Гость</p>
-              {c.q}
-            </div>,
-            <div class="max-w-[90%] rounded-[18px] rounded-bl-sm bg-white p-4 text-sm text-ink" data-reveal style={`--d:${i * 2 + 1}`}>
-              <p class="text-[0.65rem] text-mint-dark uppercase">Берёзовая роща</p>
-              {c.a.split('\n')[0]}
-            </div>,
-          ])
+          howTo.map((st, i) => (
+            <li class="card relative overflow-hidden p-6" data-reveal style={`--d:${i}`}>
+              <span class="absolute -top-4 -right-2 font-display text-[6rem] leading-none text-mint/15" aria-hidden="true">{i + 1}</span>
+              <p class="relative font-display text-base uppercase">{st.name}</p>
+              <p class="relative mt-3 text-sm text-muted">{st.text}</p>
+            </li>
+          ))
         }
-      </div>
+      </ol>
     </div>
   </section>
 

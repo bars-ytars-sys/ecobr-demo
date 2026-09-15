@@ -61,8 +61,17 @@
 @utility glass-dark {
   @apply border border-white/15 bg-black/25 text-white backdrop-blur-xl;
 }
+/* Подпись над заголовком: листик + обычный регистр (свой почерк ecobr) */
 @utility eyebrow {
-  @apply text-[0.72rem] font-semibold tracking-[0.18em] text-muted uppercase;
+  @apply inline-flex items-center gap-2 text-[0.95rem] font-semibold text-mint-dark;
+  &::before {
+    content: "";
+    width: 18px;
+    height: 10px;
+    border-radius: 0 100% 0 100%;
+    background: currentColor;
+    opacity: 0.85;
+  }
 }
 @utility h-section {
   @apply font-display text-[2rem] leading-[1.02] uppercase sm:text-5xl lg:text-[3.6rem];

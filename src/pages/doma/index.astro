@@ -35,8 +35,8 @@ const jsonLd = [
   description="Дома базы отдыха «Берёзовая роща»: А-фреймы, барнхаусы, шале, Сфера и Панорама с банным чаном и баней, от 2 до 10 гостей. Цены и фото."
   jsonLd={jsonLd}
 >
-  <section class="inset pt-[68px] sm:pt-[84px]">
-    <div class="relative isolate overflow-hidden rounded-[var(--radius-xl)] px-5 py-14 text-white sm:px-10 sm:py-20 lg:px-14">
+  <section data-hero-dark>
+    <div class="relative isolate overflow-hidden px-4 pt-32 pb-24 text-white sm:px-8 sm:pt-40 sm:pb-32 lg:px-[max(2rem,calc((100vw-1240px)/2+2rem))]">
       <Picture formats={['avif', 'webp']} src={cover} alt="" widths={[800, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover" />
       <div class="absolute inset-0 -z-10 bg-gradient-to-r from-black/75 via-black/45 to-black/10"></div>
       <div class="[&_a]:text-white/80 [&_span]:text-white"><Breadcrumbs items={crumbs} /></div>
@@ -45,6 +45,7 @@ const jsonLd = [
       <nav class="mt-8 flex flex-wrap gap-2" aria-label="Разделы каталога" data-reveal>
         {groups.map((g) => <a href={`#${g.id}`} class="glass-dark rounded-full px-4 py-2.5 font-display text-xs uppercase hover:bg-white hover:text-ink">{g.title}</a>)}
       </nav>
+      <svg class="absolute inset-x-0 -bottom-px h-12 w-full text-page sm:h-20" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60 C240 10 480 10 720 45 C960 80 1200 90 1440 40 L1440 100 L0 100 Z" fill="currentColor" /></svg>
     </div>
   </section>
 

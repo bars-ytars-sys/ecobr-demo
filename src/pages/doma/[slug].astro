@@ -72,9 +72,9 @@ const jsonLd = [
 ---
 
 <Base title={h.title} description={h.description} ogImage={og.src} jsonLd={jsonLd}>
-  {/* Первый экран дома: обложка в скруглённой карточке + плавающая цена */}
-  <section class="inset pt-[68px] sm:pt-[84px]">
-    <div class="relative isolate flex min-h-[78svh] flex-col justify-end overflow-hidden rounded-[var(--radius-xl)] text-white lg:min-h-[680px]">
+  {/* Первый экран дома: обложка во всю ширину, волна снизу, карточка цены */}
+  <section data-hero-dark>
+    <div class="relative isolate flex min-h-[86svh] flex-col justify-end overflow-hidden text-white lg:min-h-[700px]">
       <Picture
         formats={['avif', 'webp']}
         src={h.cover}
@@ -87,16 +87,16 @@ const jsonLd = [
         transition:name={`cover-${house.id}`}
       />
       <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-black/20 to-black/40"></div>
-      <div class="grid gap-6 px-4 pt-24 pb-5 sm:px-10 sm:pb-8 lg:grid-cols-[1.5fr_1fr] lg:items-end lg:px-14">
+      <div class="wrap grid gap-6 pt-28 pb-20 sm:pb-24 lg:grid-cols-[1.5fr_1fr] lg:items-end">
         <div>
           <div class="[&_a]:text-white/80 [&_span]:text-white"><Breadcrumbs items={crumbs} /></div>
           <p class="glass-dark mt-6 inline-flex rounded-full px-4 py-2 text-xs font-semibold" data-reveal>{h.tagline}</p>
           <h1 class="mt-4 text-[2.8rem] leading-[0.95] sm:text-7xl lg:text-[5.5rem]" data-reveal style="--d:1">{h.name}</h1>
-          <dl class="glass-dark mt-6 grid max-w-2xl grid-cols-4 rounded-[18px] p-3 sm:p-4" data-reveal style="--d:2">
+          <dl class="mt-6 grid max-w-2xl grid-cols-4 border-y border-white/25 py-3" data-reveal style="--d:2">
             {facts.map((f) => <div class="px-1 sm:px-3"><dt class="text-[0.6rem] text-white/60 uppercase sm:text-xs">{f.k}</dt><dd class="font-display text-sm sm:text-xl">{f.v}</dd></div>)}
           </dl>
         </div>
-        <div class="glass rounded-[22px] p-5 text-ink sm:p-6 lg:justify-self-end" data-reveal style="--d:3">
+        <div class="card p-5 text-ink sm:p-6 lg:justify-self-end" data-reveal style="--d:3">
           <div class="grid grid-cols-2 gap-4">
             <div><p class="text-xs text-muted">Будни, вс–чт</p><p class="font-display text-2xl">{rub(h.price.weekday)}</p></div>
             <div><p class="text-xs text-muted">Выходные, от 2 ночей</p><p class="font-display text-2xl">{rub(h.price.weekend)}</p></div>
@@ -105,6 +105,7 @@ const jsonLd = [
           <p class="mt-2 text-center text-xs text-muted">Цена за сутки при двухместном размещении</p>
         </div>
       </div>
+          <svg class="absolute inset-x-0 -bottom-px h-12 w-full text-page sm:h-20" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60 C240 10 480 10 720 45 C960 80 1200 90 1440 40 L1440 100 L0 100 Z" fill="currentColor" /></svg>
     </div>
   </section>
 
@@ -112,7 +113,7 @@ const jsonLd = [
     <div class="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
       <div data-reveal>
         <p class="eyebrow">О доме</p>
-        <h2 id="about-title" class="h-section mt-3">{h.name} — {h.tagline}</h2>
+        <h2 id="about-title" class="h-section mt-3">Дом «{h.name}»</h2>
         <p class="mt-5 max-w-2xl text-lg leading-relaxed">{h.lead}</p>
         <p class="mt-4 max-w-2xl text-muted">Рядом — SPA-комплекс с бассейном под открытым небом, ресторан, контактная ферма и рыбалка на собственных прудах. С животными можно.</p>
       </div>
